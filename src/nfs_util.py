@@ -56,7 +56,7 @@ def change_line(index: int, newline: str):
     with open("/etc/exports~", "r") as exports:
         new = open("/etc/exports", "a")
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if index == line.index:
                 new.write(newline)
             else:
@@ -69,7 +69,7 @@ def change_line(index: int, newline: str):
 def get_line(path: str):
     with open("/etc/exports", "r") as exports:
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if path in line:
                 return line.index
             line = exports.readline()
@@ -80,7 +80,7 @@ def get_line_count():
     count: int = 0
     with open("/etc/exports", "r") as exports:
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             count += 1
             line = exports.readline()
     return count

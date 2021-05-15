@@ -209,7 +209,7 @@ def truefalse(polarity: str):
 def get_line(name: str):
     with open("/etc/samba/smb.conf", "r") as exports:
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if name in line:
                 return line.index
             line = exports.readline()
@@ -220,7 +220,7 @@ def get_line_count():
     count: int = 0
     with open("/etc/samba/smb.conf", "r") as exports:
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             count += 1
             line = exports.readline()
     return count
@@ -231,7 +231,7 @@ def get_block(index: int):
     block: list = []
     with open("/etc/samba/smb.conf", "r") as exports:
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if index == line.index:
                 if jumps < 7:
                     block.append(line)
@@ -247,7 +247,7 @@ def remove_block(index: int):
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if index == line.index:
                 if jumps < 7:
                     # Just skip
@@ -266,7 +266,7 @@ def change_block(index: int, block: list):
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if index == line.index:
                 if jumps < 7:
                     new.write(block[jumps])
@@ -284,7 +284,7 @@ def add_block(index: int, block: list):
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
         line = exports.readline()
-        while line != "":  # The EOF char is an empty string
+        while line != "":
             if index == line.index:
                 for i in range(0, len(block)):
                     new.write(block[i])

@@ -36,13 +36,16 @@ def main(arguments: list):
 def create_vhosts_directory():
     subprocess.run(["mkdir", "-p", "/etc/httpd/sites-available"], check=True, text=True)
 
+
 def sysctl(action: str):
     subprocess.run(["systemctl", action, "named"], check=True, text=True)
     subprocess.run(["systemctl", action, "httpd"], check=True, text=True)
 
 
 def yum(action: str):
-    subprocess.run(["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True, text=True)
+    subprocess.run(
+        ["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True, text=True
+    )
 
 
 if __name__ == "__main__":
