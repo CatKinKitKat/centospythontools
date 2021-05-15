@@ -12,7 +12,7 @@ def main(arguments: list):
         print("http_dns_enabler.py install|uninstal|start|stop|enable|disable|restart")
     elif arguments[0] == "install":
         yum("install")
-        pass
+        create_vhosts_directory()
     elif arguments[0] == "uninstall":
         sysctl("stop")
         sysctl("disable")
@@ -32,6 +32,9 @@ def main(arguments: list):
 
     exit()
 
+
+def create_vhosts_directory():
+    subprocess.run(["mkdir", "-p", "/etc/httpd/sites-available"], check=True, text=True)
 
 def sysctl(action: str):
     subprocess.run(["systemctl", action, "named"], check=True, text=True)

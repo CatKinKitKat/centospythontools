@@ -12,7 +12,6 @@ def main(arguments: list):
         print("samba_enabler.py install|uninstal|start|stop|enable|disable|restart")
     elif arguments[0] == "install":
         yum("install")
-        pass
     elif arguments[0] == "uninstall":
         sysctl("stop")
         sysctl("disable")

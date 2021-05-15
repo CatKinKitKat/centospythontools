@@ -12,7 +12,6 @@ def main(arguments: list):
         print("nfs_enabler.py install|uninstal|start|stop|enable|disable|restart")
     elif arguments[0] == "install":
         yum("install")
-        pass
     elif arguments[0] == "uninstall":
         sysctl("stop")
         sysctl("disable")
@@ -26,7 +25,7 @@ def main(arguments: list):
         sysctl("enable")
     elif arguments[0] == "disable":
         sysctl("stop")
-        sysctl("disable") 
+        sysctl("disable")
     elif arguments[0] == "restart":
         sysctl("restart")
 
