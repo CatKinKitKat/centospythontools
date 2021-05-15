@@ -39,7 +39,7 @@ def sysctl(action: str):
 
 
 def yum(action: str):
-    subprocess.run(["yum", action, "samba", "-y"], check=True, text=True)
+    subprocess.run(["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True, text=True)
 
 
 if __name__ == "__main__":
