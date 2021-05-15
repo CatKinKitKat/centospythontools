@@ -5,11 +5,11 @@ import sys, subprocess
 
 def main(arguments: list):
     if len(arguments) != 1:
-        print("nfs_enabler.py install|uninstal|start|stop|enable|disable")
+        print("nfs_enabler.py install|uninstal|start|stop|enable|disable|restart")
         exit()
 
     if arguments[0] == "help":
-        print("nfs_enabler.py install|uninstal|start|stop|enable|disable")
+        print("nfs_enabler.py install|uninstal|start|stop|enable|disable|restart")
     elif arguments[0] == "install":
         yum("install")
         pass
@@ -26,7 +26,9 @@ def main(arguments: list):
         sysctl("enable")
     elif arguments[0] == "disable":
         sysctl("stop")
-        sysctl("disable")
+        sysctl("disable") 
+    elif arguments[0] == "restart":
+        sysctl("restart")
 
     exit()
 

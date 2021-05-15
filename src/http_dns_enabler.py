@@ -5,11 +5,11 @@ import sys, subprocess
 
 def main(arguments: list):
     if len(arguments) != 1:
-        print("samba_enabler.py install|uninstal|start|stop|enable|disable|restart")
+        print("http_dns_enabler.py install|uninstal|start|stop|enable|disable|restart")
         exit()
 
     if arguments[0] == "help":
-        print("samba_enabler.py install|uninstal|start|stop|enable|disable|restart")
+        print("http_dns_enabler.py install|uninstal|start|stop|enable|disable|restart")
     elif arguments[0] == "install":
         yum("install")
         pass
@@ -34,8 +34,8 @@ def main(arguments: list):
 
 
 def sysctl(action: str):
-    subprocess.run(["systemctl", action, "smb"], check=True, text=True)
-    subprocess.run(["systemctl", action, "nmb"], check=True, text=True)
+    subprocess.run(["systemctl", action, "named"], check=True, text=True)
+    subprocess.run(["systemctl", action, "httpd"], check=True, text=True)
 
 
 def yum(action: str):
