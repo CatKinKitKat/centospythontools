@@ -13,13 +13,13 @@ completedColumns:
 
 ## Todo
 
-- [prog-2-samba](tasks/prog-2-samba.md)
 - [prog-5-raid](tasks/prog-5-raid.md)
 
 ## In Progress
 
-- [prog-3-nfs](tasks/prog-3-nfs.md)
+- [prog-2-samba](tasks/prog-2-samba.md)
 
 ## Done
 
 - [prog-4-backup](tasks/prog-4-backup.md)
+- [prog-3-nfs](tasks/prog-3-nfs.md)
