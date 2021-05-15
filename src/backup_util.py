@@ -48,7 +48,7 @@ def encrypted_backup(path: str):
 
     subprocess.run("mkdir -p /tmp/backup /tmp/encrypted".split(), check=True, text=True)
     subprocess.run("rsync -zrvh /etc /tmp/backup".split(), check=True, text=True)
-    #--verbose --ne-nesting=2 --trim=2 --name-encrypt=/tmp/rsyncrypto-map --delete-keys --changed 
+    # --verbose --ne-nesting=2 --trim=2 --name-encrypt=/tmp/rsyncrypto-map --delete-keys --changed
     subprocess.run(
         "rsyncrypto --recurse /tmp/backup /tmp/encrypted/ /crypt/rsynckey.key /crypt/rsynckey.crt".split(),
         check=True,

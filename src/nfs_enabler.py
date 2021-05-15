@@ -1,6 +1,6 @@
 #!/bin/env python3
 
-import sys, os, shutil, subprocess
+import sys, subprocess
 
 
 def main(arguments: list):
