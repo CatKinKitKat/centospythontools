@@ -23,9 +23,9 @@ def main_menu(arg: str):
 
 
 def sysprep():
-    anwser: str = str(input("Is this the first configuration (yes/no): "))
-    while anwser != "yes" or anwser != "no":
-        anwser = str(input("Is this the first configuration (yes/no): "))
+    answer: str = str(input("Is this the first configuration (yes/no): "))
+    while answer != "yes" or answer != "no":
+        answer = str(input("Is this the first configuration (yes/no): "))
 
     if truefalse(answer):
         path: str = str(
@@ -90,17 +90,24 @@ def switch(type: int):
 def add_user():
     user: str = str(input("Username: "))
     passwd: str = str(input("Password: "))
+    path: str = str(input("SAMBA share / user directory: "))
+
     create_user(username=user)
     add_passwd(passwd=passwd)
     enable_user(user)
+
+    if not os.path.exists(os.path.dirname(path)):
+        create_dir(path=path)
+        change_ownership(user, path)
+        change_permissions(path=path)
 
     main_menu("config")
 
 
 def del_user():
     user: str = str(input("user: "))
-    anwser: str = str(input("Are you sure (yes/no): "))
-    if anwser != "yes":
+    answer: str = str(input("Are you sure (yes/no): "))
+    if answer != "yes":
         main_menu("config")
     disable_user(user)
     delete_user(user)
@@ -113,6 +120,11 @@ def add_share():
     user: str = str(input("For which user: "))
     users: str = str(input("Who else?"))
     path: str = str(input("Where: "))
+
+    if not os.path.exists(os.path.dirname(path)):
+        create_dir(path=path)
+        change_ownership(user, path)
+        change_permissions(path=path)
 
     browseable: str = str(input("Browseable (yes/no): "))
     while browseable != "yes" or browseable != "no":
@@ -198,7 +210,7 @@ def get_line(name: str):
     with open("/etc/samba/smb.conf", "r") as exports:
         line = exports.readline()
         while line != "":  # The EOF char is an empty string
-            if path in line:
+            if name in line:
                 return line.index
             line = exports.readline()
     return 0
