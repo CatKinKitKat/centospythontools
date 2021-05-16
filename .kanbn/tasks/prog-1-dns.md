@@ -1,10 +1,11 @@
 ---
 created: 2021-05-13T16:12:24.217Z
-updated: 2021-05-15T18:48:14.337Z
+updated: 2021-05-16T12:24:53.343Z
 assigned: ""
 progress: 0
 tags: []
 started: 2021-05-15T18:48:14.337Z
+completed: 2021-05-16T12:24:53.344Z
 ---
 
 # PROG 1 - DNS
