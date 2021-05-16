@@ -1,6 +1,5 @@
 #!/bin/env python3
 
-from ast import Str
 import sys, os, shutil, subprocess
 
 
