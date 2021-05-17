@@ -18,7 +18,7 @@ def main(arguments: list):
             exit()
         if not os.path.exists(os.path.dirname(arguments[1])):
             create_dir(arguments[1])
-        change_ownership(arguments[1])
+            change_ownership(arguments[1])
         change_line(
             get_line_count(), build_line(arguments[1], arguments[2], get_options())
         )
