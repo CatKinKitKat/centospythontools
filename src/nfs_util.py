@@ -13,7 +13,7 @@ def main(arguments: list):
             exit()
 
     if arguments[0] == "add":
-        if not get_line(arguments[1]) == 0:
+        if not get_line(arguments[1]) != 0:
             print("That directory is already being shared.")
             exit()
         if not os.path.exists(os.path.dirname(arguments[1])):
