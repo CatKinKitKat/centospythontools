@@ -1,6 +1,6 @@
 #!/bin/env python3
 
-import sys, os, shutil
+import sys, os, shutil, subprocess
 
 
 def main(arguments: list):
@@ -16,9 +16,13 @@ def main(arguments: list):
         if not get_line(arguments[1] == 0):
             print("That directory is already being shared.")
             exit()
+        if not os.path.exists(os.path.dirname(arguments[1])):
+            create_dir(arguments[1])
+        change_ownership(arguments[1])
         change_line(
             get_line_count(), build_line(arguments[1], arguments[2], get_options())
         )
+        print("Added")
     elif arguments[0] == "edit":
         if get_line(arguments[1] == 0):
             print("That directory is not being shared.")
@@ -26,6 +30,7 @@ def main(arguments: list):
         change_line(
             get_line_count(), build_line(arguments[1], arguments[2], get_options())
         )
+        print("Edited")
     elif arguments[0] == "stop":
         if get_line(arguments[1] == 0):
             print("That directory is not being shared.")
@@ -34,11 +39,18 @@ def main(arguments: list):
             get_line_count(),
             build_line(arguments[1], arguments[2], get_options(), enabled=False),
         )
+        print("Stopped")
     elif arguments[0] == "delete":
         if get_line(arguments[1] == 0):
             print("That directory is not being shared.")
             exit()
         change_line(get_line(arguments[1]), "")
+        if (
+            str(input("Removed\n Also Delete directory and contents? (yes/no): "))
+            != "yes"
+        ):
+            remove_dir(arguments[1])
+            print("Deleted")
 
     exit()
 
@@ -137,6 +149,18 @@ def retrive_config(type: int):
         return "ro,hide,async"
     else:  # default
         return "rw,nohide,sync"
+
+
+def change_ownership(path: str):
+    subprocess.run(["chown", "nobody:nobody", path], check=True)
+
+
+def create_dir(path: str):
+    subprocess.run(["mkdir", "-p", path], check=True)
+
+
+def remove_dir(path: str):
+    subprocess.run(["rm", "-rf", path], check=True)
 
 
 if __name__ == "__main__":
