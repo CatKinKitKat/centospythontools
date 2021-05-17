@@ -24,10 +24,10 @@ def main(arguments: list):
 def backup(path: str):
 
     if not os.path.exists(path):
-        subprocess.run(["mkdir", "-p", path], check=True, text=True)
+        subprocess.run(["mkdir", "-p", path], check=True)
 
     backpath = "rsync -zavh /etc " + path
-    subprocess.run(backpath.split(), check=True, text=True)
+    subprocess.run(backpath.split(), check=True)
 
     print("RSync Backup at " + path)
     exit()
@@ -36,7 +36,7 @@ def backup(path: str):
 def encrypted_backup(path: str):
 
     if not os.path.exists("/crypt/rsynckey.key"):
-        subprocess.run("mkdir -p /crypt".split(), check=True, text=True)
+        subprocess.run("mkdir -p /crypt".split(), check=True)
         subprocess.run(
             "openssl req -nodes -newkey rsa:1536 -x509 -keyout /crypt/rsynckey.key -out /crypt/rsynckey.crt".split(),
             check=True,
@@ -44,10 +44,10 @@ def encrypted_backup(path: str):
         )
 
     if not os.path.exists(path):
-        subprocess.run(["mkdir", "-p", path], check=True, text=True)
+        subprocess.run(["mkdir", "-p", path], check=True)
 
-    subprocess.run("mkdir -p /tmp/backup /tmp/encrypted".split(), check=True, text=True)
-    subprocess.run("rsync -zrvh /etc /tmp/backup".split(), check=True, text=True)
+    subprocess.run("mkdir -p /tmp/backup /tmp/encrypted".split(), check=True)
+    subprocess.run("rsync -zrvh /etc /tmp/backup".split(), check=True)
     # --verbose --ne-nesting=2 --trim=2 --name-encrypt=/tmp/rsyncrypto-map --delete-keys --changed
     subprocess.run(
         "rsyncrypto --recurse /tmp/backup /tmp/encrypted/ /crypt/rsynckey.key /crypt/rsynckey.crt".split(),
@@ -56,8 +56,8 @@ def encrypted_backup(path: str):
     )
     subprocess.run("rm -rf /tmp/backup")
     backpath = "rsync -zrvh /tmp/encrypted " + path
-    subprocess.run(backpath.split(), check=True, text=True)
-    subprocess.run("rm -rf /tmp/encrypted".split(), check=True, text=True)
+    subprocess.run(backpath.split(), check=True)
+    subprocess.run("rm -rf /tmp/encrypted".split(), check=True)
 
     print("Encrypted RSync Backup at " + path)
     exit()

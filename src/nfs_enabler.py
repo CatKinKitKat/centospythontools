@@ -33,11 +33,11 @@ def main(arguments: list):
 
 
 def sysctl(action: str):
-    subprocess.run(["systemctl", action, "nfs"], check=True, text=True)
+    subprocess.run(["systemctl", action, "nfs"], check=True)
 
 
 def yum(action: str):
-    subprocess.run(["yum", action, "nfs-util", "-y"], check=True, text=True)
+    subprocess.run(["yum", action, "nfs-util", "-y"], check=True)
 
 
 if __name__ == "__main__":

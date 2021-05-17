@@ -299,23 +299,23 @@ def change_ownership(
     user: str = "sambauser", path: str = "/samba", group: str = "sambashare"
 ):
     ownership: str = user + ":" + group
-    subprocess.run(["chown", ownership, path], check=True, text=True)
+    subprocess.run(["chown", ownership, path], check=True)
 
 
 def change_permissions(path: str = "/samba"):
-    subprocess.run(["chmod", "2770", path], check=True, text=True)
+    subprocess.run(["chmod", "2770", path], check=True)
 
 
 def create_dir(path: str = "/samba"):
-    subprocess.run(["mkdir", "-p", path], check=True, text=True)
+    subprocess.run(["mkdir", "-p", path], check=True)
 
 
 def create_group(groupname: str = "sambashare"):
-    subprocess.run(["groupadd", groupname], check=True, text=True)
+    subprocess.run(["groupadd", groupname], check=True)
 
 
 def change_group(path: str = "/samba", group: str = "sambashare"):
-    subprocess.run(["chgrp", group, path], check=True, text=True)
+    subprocess.run(["chgrp", group, path], check=True)
 
 
 def create_user(
@@ -330,26 +330,26 @@ def create_user(
         + groupname
         + username
     )
-    subprocess.run(command.split(), check=True, text=True)
+    subprocess.run(command.split(), check=True)
 
 
 def add_passwd(passwd: str, user: str = "sambaser"):
     command: str = (
         "(echo " + passwd + "; echo " + passwd + ") | smbpasswd -a -s " + user
     )
-    subprocess.run(command.split(), check=True, text=True)
+    subprocess.run(command.split(), check=True)
 
 
 def enable_user(user: str = "sambauser"):
-    subprocess.run(["smbpasswd", "-e", user], check=True, text=True)
+    subprocess.run(["smbpasswd", "-e", user], check=True)
 
 
 def disable_user(user: str = "sambauser"):
-    subprocess.run(["smbpasswd", "-d", user], check=True, text=True)
+    subprocess.run(["smbpasswd", "-d", user], check=True)
 
 
 def delete_user(user: str = "sambauser"):
-    subprocess.run(["userdel", "-r", user], check=True, text=True)
+    subprocess.run(["userdel", "-r", user], check=True)
 
 
 if __name__ == "__main__":

@@ -33,12 +33,12 @@ def main(arguments: list):
 
 
 def sysctl(action: str):
-    subprocess.run(["systemctl", action, "smb"], check=True, text=True)
-    subprocess.run(["systemctl", action, "nmb"], check=True, text=True)
+    subprocess.run(["systemctl", action, "smb"], check=True)
+    subprocess.run(["systemctl", action, "nmb"], check=True)
 
 
 def yum(action: str):
-    subprocess.run(["yum", action, "samba", "-y"], check=True, text=True)
+    subprocess.run(["yum", action, "samba", "-y"], check=True)
 
 
 if __name__ == "__main__":
