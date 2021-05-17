@@ -13,7 +13,7 @@ def main(arguments: list):
             exit()
 
     if arguments[0] == "add":
-        if not get_line(arguments[1] == 0):
+        if not get_line(arguments[1]) == 0:
             print("That directory is already being shared.")
             exit()
         if not os.path.exists(os.path.dirname(arguments[1])):
@@ -24,7 +24,7 @@ def main(arguments: list):
         )
         print("Added")
     elif arguments[0] == "edit":
-        if get_line(arguments[1] == 0):
+        if get_line(arguments[1]) == 0:
             print("That directory is not being shared.")
             exit()
         change_line(
@@ -32,7 +32,7 @@ def main(arguments: list):
         )
         print("Edited")
     elif arguments[0] == "stop":
-        if get_line(arguments[1] == 0):
+        if get_line(arguments[1]) == 0:
             print("That directory is not being shared.")
             exit()
         change_line(
@@ -41,7 +41,7 @@ def main(arguments: list):
         )
         print("Stopped")
     elif arguments[0] == "delete":
-        if get_line(arguments[1] == 0):
+        if get_line(arguments[1]) == 0:
             print("That directory is not being shared.")
             exit()
         change_line(get_line(arguments[1]), "")
