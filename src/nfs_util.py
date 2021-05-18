@@ -61,7 +61,7 @@ def build_line(path: str, destination: str, options: str, enabled: bool = True):
     if not enabled:
         char = "#"
 
-    return str(char + path + " " + destination + "(" + options + ")")
+    return str(char + path + " " + destination + "(" + options + ")\n")
 
 
 def change_line(index: int, newline: str):
@@ -70,8 +70,8 @@ def change_line(index: int, newline: str):
     with open("/etc/exports~", "r") as exports:
         new = open("/etc/exports", "a")
         line = exports.readline()
-        while line != "":  
-            if index == i:
+        while line != "":
+            if (index - 1) == i:
                 new.write(newline)
             else:
                 new.write(line)
@@ -83,11 +83,13 @@ def change_line(index: int, newline: str):
 
 
 def get_line(path: str):
+    i: int = 0
     with open("/etc/exports", "r") as exports:
         line = exports.readline()
         while line != "":
             if path in line:
-                return line.index
+                return i
+            i += 1
             line = exports.readline()
     return 0
 

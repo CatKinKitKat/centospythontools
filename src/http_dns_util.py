@@ -192,11 +192,13 @@ def build_vhost_block(port: int, name: str, path: str, alias: str):
 
 
 def get_line(name: str, file: str):
+    i: int = 0
     with open(file, "r") as exports:
         line = exports.readline()
-        while line != file:
+        while line != "":
             if name in line:
-                return line.index
+                return i
+            i += 1
             line = exports.readline()
     return 0
 
@@ -205,79 +207,88 @@ def get_line_count(file: str):
     count: int = 0
     with open(file, "r") as exports:
         line = exports.readline()
-        while line != file:
+        while line != "":
             count += 1
             line = exports.readline()
     return count
 
 
 def get_block(index: int, file: str):
-    jumps = 0
+    jumps: int = 0
+    i: int = 0
     block: list = []
     with open(file, "r") as exports:
         line = exports.readline()
-        while line != file:
-            if index == line.index:
+        while line != "":
+            if (index - 1) == i:
                 if jumps < 7:
                     block.append(line)
                     jumps += 1
                     index += 1
+            i += 1
             line = exports.readline()
     return block
 
 
 def remove_block(index: int, file: str, size: int):
-    jumps = 0
+    jumps: int = 0
+    i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
         new = open(file, "a")
         line = exports.readline()
-        while line != file:
-            if index == line.index:
+        while line != "":
+            if (index - 1) == i:
                 if jumps < size:
                     # Just skip
                     jumps += 1
                     index += 1
             else:
                 new.write(line)
+            i += 1
             line = exports.readline()
         new.close()
     os.remove(workingfile)
 
 
 def change_block(index: int, file: str, block: list):
-    jumps = 0
+    jumps: int = 0
+    i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
         new = open(file, "a")
         line = exports.readline()
-        while line != file:
-            if index == line.index:
+        while line != "":
+            if (index - 1) == i:
                 if jumps < 7:
                     new.write(block[jumps])
                     jumps += 1
                     index += 1
             else:
                 new.write(line)
+            i += 1
             line = exports.readline()
         new.close()
     os.remove(workingfile)
 
 
 def add_block(index: int, file: str, block: list):
+    i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
         new = open(file, "a")
         line = exports.readline()
-        while line != file:
-            if index == line.index:
+        while line != "":
+            if (index - 1) == i:
                 for i in range(0, len(block)):
+                    i += 1
                     new.write(block[i])
             else:
                 new.write(line)
+            i += 1
             line = exports.readline()
         new.close()
     os.remove(workingfile)
