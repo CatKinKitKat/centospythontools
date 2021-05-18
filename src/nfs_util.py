@@ -71,7 +71,7 @@ def change_line(index: int, newline: str):
         new = open("/etc/exports", "a")
         line = exports.readline()
         while line != "":  
-            if index == i():
+            if index == i:
                 new.write(newline)
             else:
                 new.write(line)
