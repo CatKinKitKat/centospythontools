@@ -196,7 +196,7 @@ def get_line(name: str, file: str):
     with open(file, "r") as exports:
         line = exports.readline()
         while line != "":
-            if name in line:
+            if line.find(name) != -1:
                 return i
             i += 1
             line = exports.readline()

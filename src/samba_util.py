@@ -211,7 +211,7 @@ def get_line(name: str):
     with open("/etc/samba/smb.conf", "r") as exports:
         line = exports.readline()
         while line != "":
-            if name in line:
+            if line.find(name) != -1:
                 return i
             i += 1
             line = exports.readline()

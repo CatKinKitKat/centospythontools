@@ -87,7 +87,7 @@ def get_line(path: str):
     with open("/etc/exports", "r") as exports:
         line = exports.readline()
         while line != "":
-            if path in line:
+            if line.find(path) != -1:
                 return i
             i += 1
             line = exports.readline()
