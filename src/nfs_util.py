@@ -66,14 +66,16 @@ def build_line(path: str, destination: str, options: str, enabled: bool = True):
 
 def change_line(index: int, newline: str):
     shutil.move("/etc/exports", "/etc/exports~")
+    i: int = 0
     with open("/etc/exports~", "r") as exports:
         new = open("/etc/exports", "a")
         line = exports.readline()
         while line != "":  
-            if index == line.index:
+            if index == i():
                 new.write(newline)
             else:
                 new.write(line)
+            i += 1
             line = exports.readline()
         new.truncate()
         new.close()
