@@ -28,7 +28,8 @@ def main(arguments: list):
             print("That directory is not being shared.")
             exit()
         change_line(
-            get_line_count(), build_line(arguments[1], arguments[2], get_options())
+            get_line(arguments[1]),
+            build_line(arguments[1], arguments[2], get_options()),
         )
         print("Edited")
     elif arguments[0] == "stop":
@@ -36,7 +37,7 @@ def main(arguments: list):
             print("That directory is not being shared.")
             exit()
         change_line(
-            get_line_count(),
+            get_line(arguments[1]),
             build_line(arguments[1], arguments[2], get_options(), enabled=False),
         )
         print("Stopped")
@@ -57,7 +58,7 @@ def main(arguments: list):
 
 def build_line(path: str, destination: str, options: str, enabled: bool = True):
     char: chr = ""
-    if enabled:
+    if not enabled:
         char = "#"
 
     return str(char + path + " " + destination + "(" + options + ")")
@@ -65,18 +66,17 @@ def build_line(path: str, destination: str, options: str, enabled: bool = True):
 
 def change_line(index: int, newline: str):
     shutil.move("/etc/exports", "/etc/exports~")
-    exports = open("/etc/exports~", "r")
-    new = open("/etc/exports", "w")
-    line = exports.readline()
-    while line != "":
-        if index == line.index:
-            new.write(newline)
-        else:
-            new.write(line)
+    with open("/etc/exports~", "r") as exports:
+        new = open("/etc/exports", "a")
         line = exports.readline()
-    exports.close()
-    new.flush()
-    new.close()
+        while line != "":  
+            if index == line.index:
+                new.write(newline)
+            else:
+                new.write(line)
+            line = exports.readline()
+        new.truncate()
+        new.close()
     os.remove("/etc/exports~")
 
 
