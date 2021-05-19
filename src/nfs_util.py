@@ -106,6 +106,7 @@ def remove_line(index: int):
 def get_line(path: str):
     exports = open("/etc/exports", "r")
     for i, line in enumerate(exports):
+        print(str(i) + " " + line)
         if path in line:
             exports.close()
             return i
