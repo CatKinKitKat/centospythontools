@@ -24,7 +24,7 @@ def main_menu(arg: str):
 
 def sysprep():
     answer: str = str(input("Is this the first configuration (yes/no): "))
-    while answer != "yes" or answer != "no":
+    while not (answer.__contains__("yes")) or not (answer.__contains__("no")):
         answer = str(input("Is this the first configuration (yes/no): "))
 
     if truefalse(answer):
