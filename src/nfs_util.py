@@ -192,15 +192,21 @@ def retrive_config(type: int):
 
 
 def change_ownership(path: str):
-    subprocess.run(["chown", "nobody:nobody", path], check=True)
+    try:
+        subprocess.run(["chown", "nobody:nobody", path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def create_dir(path: str):
-    os.makedirs(path, mode = 0o770, exist_ok = True) 
+    try:
+        os.makedirs(path, mode=0o770, exist_ok=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def remove_dir(path: str):
-    subprocess.run(["rm", "-rf", path], check=True)
+    shutil.rmtree(path)
 
 
 if __name__ == "__main__":

@@ -331,23 +331,35 @@ def change_ownership(
     user: str = "sambauser", path: str = "/samba", group: str = "sambashare"
 ):
     ownership: str = user + ":" + group
-    subprocess.run(["chown", ownership, path], check=True)
+    try:
+        subprocess.run(["chown", ownership, path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def change_permissions(path: str = "/samba"):
-    subprocess.run(["chmod", "2770", path], check=True)
+    try:
+        subprocess.run(["chmod", "2770", path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def create_dir(path: str = "/samba"):
-    os.makedirs(path, mode = 0o770, exist_ok = True) 
+    os.makedirs(path, mode=0o770, exist_ok=True)
 
 
 def create_group(groupname: str = "sambashare"):
-    subprocess.run(["groupadd", groupname], check=True)
+    try:
+        subprocess.run(["groupadd", groupname], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def change_group(path: str = "/samba", group: str = "sambashare"):
-    subprocess.run(["chgrp", group, path], check=True)
+    try:
+        subprocess.run(["chgrp", group, path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def create_user(
@@ -362,26 +374,38 @@ def create_user(
         + groupname
         + username
     )
-    subprocess.run(command.split(), check=True)
+    try:
+        subprocess.run(command.split(), check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def add_passwd(passwd: str, user: str = "sambaser"):
     command: str = (
         "(echo " + passwd + "; echo " + passwd + ") | smbpasswd -a -s " + user
     )
-    subprocess.run(command.split(), check=True)
-
-
-def enable_user(user: str = "sambauser"):
-    subprocess.run(["smbpasswd", "-e", user], check=True)
+    try:
+        subprocess.run(command.split(), check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+    try:
+        subprocess.run(["smbpasswd", "-e", user], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def disable_user(user: str = "sambauser"):
-    subprocess.run(["smbpasswd", "-d", user], check=True)
+    try:
+        subprocess.run(["smbpasswd", "-d", user], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def delete_user(user: str = "sambauser"):
-    subprocess.run(["userdel", "-r", user], check=True)
+    try:
+        subprocess.run(["userdel", "-r", user], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 if __name__ == "__main__":

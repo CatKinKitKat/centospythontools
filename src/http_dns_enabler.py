@@ -1,6 +1,6 @@
 #!/bin/env python3
 
-import sys, subprocess
+import os, sys, subprocess
 
 
 def main(arguments: list):
@@ -34,18 +34,26 @@ def main(arguments: list):
 
 
 def create_vhosts_directory():
-    subprocess.run(["mkdir", "-p", "/etc/httpd/sites-available"], check=True)
+    os.makedirs("/etc/httpd/sites-available", mode=0o755, exist_ok=True)
 
 
 def sysctl(action: str):
-    subprocess.run(["systemctl", action, "named"], check=True)
-    subprocess.run(["systemctl", action, "httpd"], check=True)
+    try:
+        subprocess.run(["systemctl", action, "named"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+
+    try:
+        subprocess.run(["systemctl", action, "httpd"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def yum(action: str):
-    subprocess.run(
-        ["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True
-    )
+    try:
+        subprocess.run(["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 if __name__ == "__main__":

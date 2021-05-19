@@ -54,7 +54,10 @@ def add_forward(alias: str, ip: str):
         )
     file = "/var/named/" + alias + ".hosts"
     if not os.path.isfile(file):
-        subprocess.run(["touch", file], check=True)
+        try:
+            subprocess.run(["touch", file], check=True)
+        except subprocess.CalledProcessError as e:
+            print(e.output)
         add_block(get_line_count(file), file, build_table_forward_block(alias, ip))
 
 
@@ -64,7 +67,7 @@ def remove_forward(alias: str):
         remove_block(index, "/etc/named.conf", 5)
     file = "/var/named/" + alias + ".hosts"
     if os.path.isfile(file):
-        subprocess.run(["rm", "-f", file], check=True)
+        os.remove(file)
 
 
 def add_reverse(alias: str, ip: str):
@@ -77,7 +80,10 @@ def add_reverse(alias: str, ip: str):
         )
     file = "/var/named/reverse." + alias + ".hosts"
     if not os.path.isfile(file):
-        subprocess.run(["touch", file], check=True)
+        try:
+            subprocess.run(["touch", file], check=True)
+        except subprocess.CalledProcessError as e:
+            print(e.output)
         add_block(
             get_line_count(file), file, build_table_reverse_block(alias, ip_spliter(ip))
         )
@@ -89,7 +95,7 @@ def remove_reverse(alias: str, ip: str):
         remove_block(index, "/etc/named.conf", 5)
     file = "/var/named/reverse." + alias + ".hosts"
     if os.path.isfile(file):
-        subprocess.run(["rm", "-f", file], check=True)
+        os.remove(file)
 
 
 def ip_spliter(ip: str, option: bool = False):
@@ -116,8 +122,8 @@ def add_vhost(alias: str, port: str):
 def remove_vhost(alias: str):
     file: str = "/etc/httpd/conf.d/" + alias + ".conf"
     path: str = "/var/www/" + alias
-    subprocess.run(["rm", "-rf", path], check=True)
-    subprocess.run(["rm", "-f", file], check=True)
+    shutil.rmtree(path)
+    os.remove(file)
     sysctl()
 
 
@@ -316,16 +322,19 @@ def symlink_website(name: str):
     config: str = "/etc/httpd/sites-available/" + name
     link: str = "/etc/httpd/conf.d/" + name
 
-    subprocess.run(["ln", "-s", config, link], check=True)
+    try:
+        subprocess.run(["ln", "-s", config, link], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def create_vhost_directory(path: str):
     path = path + "/public_html"
-    os.makedirs(path, mode = 0o770, exist_ok = True) 
+    os.makedirs(path, mode=0o770, exist_ok=True)
 
 
 def create_directory(path: str):
-    os.makedirs(path, mode = 0o770, exist_ok = True) 
+    os.makedirs(path, mode=0o770, exist_ok=True)
 
 
 def add_example_page(path: str):
@@ -333,11 +342,17 @@ def add_example_page(path: str):
         create_vhost_directory(path)
 
     command: str = 'echo "<h1>Welcome!</h1>" >> ' + path + "/public_html/index.html"
-    subprocess.run(command.split(), check=True)
+    try:
+        subprocess.run(command.split(), check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 def sysctl():
-    subprocess.run(["systemctl", "restart", "httpd"], check=True)
+    try:
+        subprocess.run(["systemctl", "restart", "httpd"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
 
 
 if __name__ == "__main__":
