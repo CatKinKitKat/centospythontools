@@ -108,7 +108,7 @@ def change_line(index: int, newline: str):
         data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
         for line in data:
-            if (index - 1) == i:
+            if index == i:
                 new.write(newline + "\n")
             else:
                 new.write(line + "\n")
@@ -127,7 +127,7 @@ def remove_line(index: int):
         data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
         for line in data:
-            if (index - 1) == i:
+            if index == i:
                 i += 1
             else:
                 new.write(line + "\n")

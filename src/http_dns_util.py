@@ -231,7 +231,7 @@ def get_block(index: int, file: str):
     with open(file, "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
-            if (index - 1) == i:
+            if index == i:
                 if jumps < 7:
                     block.append(line)
                     jumps += 1
@@ -250,7 +250,7 @@ def remove_block(index: int, file: str, size: int):
         new = open(file, "a")
         data: list = exports.read().split("\n")
         for line in data:
-            if (index - 1) == i:
+            if index == i:
                 if jumps < size:
                     # Just skip
                     jumps += 1
@@ -274,7 +274,7 @@ def change_block(index: int, file: str, block: list):
         new = open(file, "a")
         data: list = exports.read().split("\n")
         for line in data:
-            if (index - 1) == i:
+            if index == i:
                 if jumps < 7:
                     new.write(block[jumps] + "\n")
                     jumps += 1
@@ -297,7 +297,7 @@ def add_block(index: int, file: str, block: list):
         new = open(file, "a")
         data: list = exports.read().split("\n")
         for line in data:
-            if (index - 1) == i:
+            if index == i:
                 for i in range(0, len(block)):
                     i += 1
                     new.write(block[i] + "\n")
