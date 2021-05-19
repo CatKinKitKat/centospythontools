@@ -40,7 +40,6 @@ def encrypted_backup(path: str):
         subprocess.run(
             "openssl req -nodes -newkey rsa:1536 -x509 -keyout /crypt/rsynckey.key -out /crypt/rsynckey.crt".split(),
             check=True,
-            text=True,
         )
 
     if not os.path.exists(path):
@@ -52,7 +51,6 @@ def encrypted_backup(path: str):
     subprocess.run(
         "rsyncrypto --recurse /tmp/backup /tmp/encrypted/ /crypt/rsynckey.key /crypt/rsynckey.crt".split(),
         check=True,
-        text=True,
     )
     subprocess.run("rm -rf /tmp/backup")
     backpath = "rsync -zrvh /tmp/encrypted " + path
