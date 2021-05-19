@@ -196,7 +196,7 @@ def change_ownership(path: str):
 
 
 def create_dir(path: str):
-    subprocess.run(["mkdir", "-p", path], check=True)
+    os.makedirs(path, mode = 0o770, exist_ok = True) 
 
 
 def remove_dir(path: str):

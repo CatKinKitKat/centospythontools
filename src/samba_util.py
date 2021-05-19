@@ -339,7 +339,7 @@ def change_permissions(path: str = "/samba"):
 
 
 def create_dir(path: str = "/samba"):
-    subprocess.run(["mkdir", "-p", path], check=True)
+    os.makedirs(path, mode = 0o770, exist_ok = True) 
 
 
 def create_group(groupname: str = "sambashare"):

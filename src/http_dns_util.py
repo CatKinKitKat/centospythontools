@@ -320,13 +320,12 @@ def symlink_website(name: str):
 
 
 def create_vhost_directory(path: str):
-    command: str = "mkdir -p " + path + "/public_html"
-    subprocess.run(command.split(), check=True)
+    path = path + "/public_html"
+    os.makedirs(path, mode = 0o770, exist_ok = True) 
 
 
 def create_directory(path: str):
-    command: str = "mkdir -p " + path
-    subprocess.run(command.split(), check=True)
+    os.makedirs(path, mode = 0o770, exist_ok = True) 
 
 
 def add_example_page(path: str):
