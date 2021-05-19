@@ -97,9 +97,9 @@ def change_line(index: int, newline: str):
         new = open("/etc/exports", "a")
         for line in data:
             if (index - 1) == i:
-                new.write(newline)
+                new.write(newline + "\n")
             else:
-                new.write(line)
+                new.write(line + "\n")
             i += 1
         new.write("")
         new.truncate()
@@ -118,7 +118,7 @@ def remove_line(index: int):
             if (index - 1) == i:
                 i += 1
             else:
-                new.write(line)
+                new.write(line + "\n")
             i += 1
         new.write("")
         new.truncate()
