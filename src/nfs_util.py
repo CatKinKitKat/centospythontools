@@ -83,9 +83,20 @@ def get_line(path: str):
         data: list = exports.read().split("\n")
         for line in data:
             if path in line:
+                print(str(i) + ": " + path + " in " + line)
                 return i
             i += 1
     return -1
+
+
+def get_line_count():
+    fix_file()
+    count: int = 0
+    with open("/etc/exports", "r") as exports:
+        data: list = exports.read().split("\n")
+        for i in data:
+            count += i
+    return count
 
 
 def change_line(index: int, newline: str):
@@ -124,16 +135,6 @@ def remove_line(index: int):
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
-
-
-def get_line_count():
-    fix_file()
-    count: int = 0
-    with open("/etc/exports", "r") as exports:
-        data: list = exports.read().split("\n")
-        for i in data:
-            count += i
-    return count
 
 
 def get_options():
