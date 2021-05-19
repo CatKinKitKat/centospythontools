@@ -207,7 +207,7 @@ def get_line(path: str, file: str):
     fix_file(file)
     with open(file, "r") as exports:
         data: list = exports.read().split("\n")
-        for i, line in data:
+        for line in data:
             if path in line:
                 return i
     return -1

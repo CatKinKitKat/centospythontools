@@ -225,7 +225,7 @@ def get_line(path: str):
     fix_file()
     with open("/etc/samba/smb.conf", "r") as exports:
         data: list = exports.read().split("\n")
-        for i, line in data:
+        for line in data:
             if path in line:
                 return i
     return -1
@@ -266,7 +266,7 @@ def remove_block(index: int):
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
         data: list = exports.read().split("\n")
-        for i, line in data:
+        for line in data:
             if index == i:
                 if jumps < 7:
                     # Just skip
