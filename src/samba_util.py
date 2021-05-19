@@ -354,9 +354,8 @@ def create_group(groupname: str = "sambashare"):
     try:
         subprocess.run(["groupadd", groupname], check=True)
     except subprocess.CalledProcessError as e:
-        if not str(e.output).__contains__("already exists"):
-            print(e.output)
-            exit()
+        print(e.output)
+        # exit()
 
 
 def change_group(path: str = "/samba", group: str = "sambashare"):
