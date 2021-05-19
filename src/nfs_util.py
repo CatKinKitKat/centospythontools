@@ -75,7 +75,6 @@ def fix_file():
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
-    trim_whitespace()
 
 
 def get_line(path: str, ip: str):
@@ -119,7 +118,6 @@ def change_line(index: int, newline: str):
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
-    trim_whitespace()
 
 
 def remove_line(index: int):
@@ -139,7 +137,6 @@ def remove_line(index: int):
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
-    trim_whitespace()
 
 
 def set_options():
@@ -205,12 +202,6 @@ def create_dir(path: str):
 
 def remove_dir(path: str):
     subprocess.run(["rm", "-rf", path], check=True)
-
-
-def trim_whitespace():
-    subprocess.run(
-        ["tr", "-s", "\\n", "/etc/exports", ">>", "/etc/exports"], check=True
-    )
 
 
 if __name__ == "__main__":

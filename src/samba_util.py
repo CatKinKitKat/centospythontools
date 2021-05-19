@@ -282,7 +282,6 @@ def remove_block(index: int):
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
-    trim_whitespace()
 
 
 def change_block(index: int, block: list):
@@ -306,7 +305,6 @@ def change_block(index: int, block: list):
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
-    trim_whitespace()
 
 
 def add_block(index: int, block: list):
@@ -328,7 +326,6 @@ def add_block(index: int, block: list):
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
-    trim_whitespace()
 
 
 def change_ownership(
@@ -386,12 +383,6 @@ def disable_user(user: str = "sambauser"):
 
 def delete_user(user: str = "sambauser"):
     subprocess.run(["userdel", "-r", user], check=True)
-
-
-def trim_whitespace():
-    subprocess.run(
-        ["tr", "-s", "\\n", "/etc/samba/smb.conf", ">>", "/etc/exports"], check=True
-    )
 
 
 if __name__ == "__main__":

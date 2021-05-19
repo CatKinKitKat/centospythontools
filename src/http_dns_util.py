@@ -265,7 +265,6 @@ def remove_block(index: int, file: str, size: int):
         new.truncate()
         new.close()
     os.remove(workingfile)
-    trim_whitespace(file)
 
 
 def change_block(index: int, file: str, block: list):
@@ -290,7 +289,6 @@ def change_block(index: int, file: str, block: list):
         new.truncate()
         new.close()
     os.remove(workingfile)
-    trim_whitespace(file)
 
 
 def add_block(index: int, file: str, block: list):
@@ -313,7 +311,6 @@ def add_block(index: int, file: str, block: list):
         new.truncate()
         new.close()
     os.remove(workingfile)
-    trim_whitespace(file)
 
 
 def symlink_website(name: str):
@@ -343,10 +340,6 @@ def add_example_page(path: str):
 
 def sysctl():
     subprocess.run(["systemctl", "restart", "httpd"], check=True)
-
-
-def trim_whitespace(file: str):
-    subprocess.run(["tr", "-s", "\\n", file, ">>", file], check=True)
 
 
 if __name__ == "__main__":
