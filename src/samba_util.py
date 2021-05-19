@@ -156,8 +156,12 @@ def edit_share():
     while readonly != "yes" or readonly != "no":
         readonly = str(input("Read only (yes/no): "))
 
+    line_n = get_line(str("[" + name + "]"))
+    if line_n < 0:
+        line_n = 0
+
     change_block(
-        get_line(str("[" + name + "]")),
+        line_n,
         build_block(
             name, user, users, path, truefalse(browseable), truefalse(readonly)
         ),
@@ -206,16 +210,14 @@ def truefalse(polarity: str):
     return False
 
 
-def get_line(name: str):
-    i: int = 0
-    with open("/etc/samba/smb.conf", "r") as exports:
-        line = exports.readline()
-        while line != "":
-            if line.find(name) != -1:
-                return i
-            i += 1
-            line = exports.readline()
-    return 0
+def get_line(path: str):
+    exports = open("/etc/exports", "r")
+    for i, line in enumerate(exports):
+        if path in line:
+            exports.close()
+            return i
+    exports.close()
+    return -1
 
 
 def get_line_count():

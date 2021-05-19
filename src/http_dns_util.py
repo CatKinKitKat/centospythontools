@@ -46,7 +46,7 @@ def main(arguments: list):
 
 def add_forward(alias: str, ip: str):
     index = get_line(alias, "/etc/named.conf")
-    if index == 0:
+    if index < 0:
         add_block(
             get_line_count("/etc/named.conf"),
             "/etc/named.conf",
@@ -60,7 +60,7 @@ def add_forward(alias: str, ip: str):
 
 def remove_forward(alias: str):
     index = get_line(alias, "/etc/named.conf")
-    if index != 0:
+    if index < 0:
         remove_block(index, "/etc/named.conf", 5)
     file = "/var/named/" + alias + ".hosts"
     if os.path.isfile(file):
@@ -69,7 +69,7 @@ def remove_forward(alias: str):
 
 def add_reverse(alias: str, ip: str):
     index = get_line(alias, "/etc/named.conf")
-    if index == 0:
+    if index >= 0:
         add_block(
             get_line_count("/etc/named.conf"),
             "/etc/named.conf",
@@ -85,7 +85,7 @@ def add_reverse(alias: str, ip: str):
 
 def remove_reverse(alias: str, ip: str):
     index = get_line(alias, "/etc/named.conf")
-    if index != 0:
+    if index >= 0:
         remove_block(index, "/etc/named.conf", 5)
     file = "/var/named/reverse." + alias + ".hosts"
     if os.path.isfile(file):
@@ -191,16 +191,15 @@ def build_vhost_block(port: int, name: str, path: str, alias: str):
     return block
 
 
-def get_line(name: str, file: str):
-    i: int = 0
-    with open(file, "r") as exports:
-        line = exports.readline()
-        while line != "":
-            if line.find(name) != -1:
-                return i
-            i += 1
-            line = exports.readline()
-    return 0
+def get_line(path: str):
+    exports = open("/etc/exports", "r")
+    for i, line in enumerate(exports):
+        if path in line:
+            exports.close()
+            return i
+    exports.close()
+    return -1
+
 
 
 def get_line_count(file: str):

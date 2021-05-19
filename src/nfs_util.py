@@ -13,7 +13,7 @@ def main(arguments: list):
             exit()
 
     if arguments[0] == "add":
-        if get_line(arguments[1]) != 0:
+        if get_line(arguments[1]) >= 0:
             print("That directory is already being shared.")
             exit()
         if not os.path.exists(os.path.dirname(arguments[1])):
@@ -24,7 +24,7 @@ def main(arguments: list):
         )
         print("Added")
     elif arguments[0] == "edit":
-        if get_line(arguments[1]) == 0:
+        if get_line(arguments[1]) < 0:
             print("That directory is not being shared.")
             exit()
         change_line(
@@ -33,16 +33,17 @@ def main(arguments: list):
         )
         print("Edited")
     elif arguments[0] == "stop":
-        if get_line(arguments[1]) == 0:
+        if get_line(arguments[1]) < 0:
             print("That directory is not being shared.")
             exit()
         change_line(
             get_line(arguments[1]),
             build_line(arguments[1], arguments[2], get_options(), enabled=False),
         )
+
         print("Stopped")
     elif arguments[0] == "delete":
-        if get_line(arguments[1]) == 0:
+        if get_line(arguments[1]) < 0:
             print("That directory is not being shared.")
             exit()
         remove_line(get_line(arguments[1]))
@@ -101,16 +102,14 @@ def remove_line(index: int):
         new.close()
     os.remove("/etc/exports~")
 
+
 def get_line(path: str):
-    i: int = 0
-    with open("/etc/exports", "r") as exports:
-        line = exports.readline()
-        while line != "":
-            print(line)
-            if line.find(path) != -1:
-                return i
-            i += 1
-            line = exports.readline()
+    exports = open("/etc/exports", "r")
+    for i, line in enumerate(exports):
+        if path in line:
+            exports.close()
+            return i
+    exports.close()
     return -1
 
 
