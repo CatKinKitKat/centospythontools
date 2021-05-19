@@ -389,7 +389,9 @@ def delete_user(user: str = "sambauser"):
 
 
 def trim_whitespace():
-    subprocess.run(["tr", "-s", "\\n", "/etc/samba/smb.conf"], check=True)
+    subprocess.run(
+        ["tr", "-s", "\\n", "/etc/samba/smb.conf", ">>", "/etc/exports"], check=True
+    )
 
 
 if __name__ == "__main__":
