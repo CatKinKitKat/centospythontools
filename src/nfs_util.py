@@ -68,7 +68,8 @@ def build_line(path: str, destination: str, options: str, enabled: bool = True):
 def fix_file():
     shutil.move("/etc/exports", "/etc/exports~")
     with open("/etc/exports~", "r") as exports:
-        data = exports.read().replace("\n", "")
+        data = exports.read().replace("\r\n", "\n")
+        data = data.replace("\n", "\n\00")
         new = open("/etc/exports", "a")
         new.write(data)
         new.truncate()
