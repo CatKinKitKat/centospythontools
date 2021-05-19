@@ -191,8 +191,21 @@ def build_vhost_block(port: int, name: str, path: str, alias: str):
     return block
 
 
-def get_line(path: str):
-    exports = open("/etc/exports", "r")
+def fix_file(file: str):
+    workingfile: str = file + "~"
+    shutil.move(file, workingfile)
+    with open(workingfile, "r") as exports:
+        data = exports.read().replace("\n", "")
+        new = open(file, "a")
+        new.write(data)
+        new.truncate()
+        new.close()
+    os.remove(workingfile)
+
+
+def get_line(path: str, file: str):
+    fix_file(file)
+    exports = open(file, "r")
     for i, line in enumerate(exports):
         if path in line:
             exports.close()
@@ -201,8 +214,8 @@ def get_line(path: str):
     return -1
 
 
-
 def get_line_count(file: str):
+    fix_file(file)
     count: int = 0
     with open(file, "r") as exports:
         line = exports.readline()
@@ -213,6 +226,7 @@ def get_line_count(file: str):
 
 
 def get_block(index: int, file: str):
+    fix_file(file)
     jumps: int = 0
     i: int = 0
     block: list = []
@@ -230,6 +244,7 @@ def get_block(index: int, file: str):
 
 
 def remove_block(index: int, file: str, size: int):
+    fix_file(file)
     jumps: int = 0
     i: int = 0
     workingfile: str = file + "~"
@@ -247,13 +262,14 @@ def remove_block(index: int, file: str, size: int):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove(workingfile)
 
 
 def change_block(index: int, file: str, block: list):
+    fix_file(file)
     jumps: int = 0
     i: int = 0
     workingfile: str = file + "~"
@@ -271,13 +287,14 @@ def change_block(index: int, file: str, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove(workingfile)
 
 
 def add_block(index: int, file: str, block: list):
+    fix_file(file)
     i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
@@ -293,7 +310,7 @@ def add_block(index: int, file: str, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove(workingfile)

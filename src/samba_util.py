@@ -210,8 +210,20 @@ def truefalse(polarity: str):
     return False
 
 
+def fix_file():
+    shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
+    with open("/etc/samba/smb.conf~", "r") as exports:
+        data = exports.read().replace("\n", "")
+        new = open("/etc/samba/smb.conf", "a")
+        new.write(data)
+        new.truncate()
+        new.close()
+    os.remove("/etc/samba/smb.conf~")
+
+
 def get_line(path: str):
-    exports = open("/etc/exports", "r")
+    fix_file()
+    exports = open("/etc/samba/smb.conf", "r")
     for i, line in enumerate(exports):
         if path in line:
             exports.close()
@@ -221,6 +233,7 @@ def get_line(path: str):
 
 
 def get_line_count():
+    fix_file()
     count: int = 0
     with open("/etc/samba/smb.conf", "r") as exports:
         line = exports.readline()
@@ -231,6 +244,7 @@ def get_line_count():
 
 
 def get_block(index: int):
+    fix_file()
     jumps: int = 0
     i: int = 0
     block: list = []
@@ -248,6 +262,7 @@ def get_block(index: int):
 
 
 def remove_block(index: int):
+    fix_file()
     jumps: int = 0
     i: int = 0
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
@@ -264,13 +279,14 @@ def remove_block(index: int):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
 
 
 def change_block(index: int, block: list):
+    fix_file()
     jumps: int = 0
     i: int = 0
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
@@ -287,13 +303,14 @@ def change_block(index: int, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
 
 
 def add_block(index: int, block: list):
+    fix_file()
     i: int = 0
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
     with open("/etc/samba/smb.conf~", "r") as exports:
@@ -308,7 +325,7 @@ def add_block(index: int, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")

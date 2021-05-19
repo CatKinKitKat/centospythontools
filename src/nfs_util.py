@@ -65,7 +65,19 @@ def build_line(path: str, destination: str, options: str, enabled: bool = True):
     return str(char + path + " " + destination + "(" + options + ")\n")
 
 
+def fix_file():
+    shutil.move("/etc/exports", "/etc/exports~")
+    with open("/etc/exports~", "r") as exports:
+        data = exports.read().replace("\n", "")
+        new = open("/etc/exports", "a")
+        new.write(data)
+        new.truncate()
+        new.close()
+    os.remove("/etc/exports~")
+
+
 def change_line(index: int, newline: str):
+    fix_file()
     shutil.move("/etc/exports", "/etc/exports~")
     i: int = 0
     with open("/etc/exports~", "r") as exports:
@@ -78,13 +90,14 @@ def change_line(index: int, newline: str):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
 
 
 def remove_line(index: int):
+    fix_file()
     shutil.move("/etc/exports", "/etc/exports~")
     i: int = 0
     with open("/etc/exports~", "r") as exports:
@@ -97,13 +110,14 @@ def remove_line(index: int):
                 new.write(line)
             i += 1
             line = exports.readline()
-        new.write("\n")
+        new.write("")
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
 
 
 def get_line(path: str):
+    fix_file()
     exports = open("/etc/exports", "r")
     for i, line in enumerate(exports):
         print(str(i) + " " + line)
@@ -115,6 +129,7 @@ def get_line(path: str):
 
 
 def get_line_count():
+    fix_file()
     count: int = 0
     with open("/etc/exports", "r") as exports:
         line = exports.readline()
