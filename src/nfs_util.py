@@ -45,7 +45,7 @@ def main(arguments: list):
         if get_line(arguments[1]) == 0:
             print("That directory is not being shared.")
             exit()
-        change_line(get_line(arguments[1]), "")
+        remove_line(get_line(arguments[1]))
         if (
             str(input("Removed\n Also Delete directory and contents? (yes/no): "))
             != "yes"
@@ -81,6 +81,23 @@ def change_line(index: int, newline: str):
         new.close()
     os.remove("/etc/exports~")
 
+
+def remove_line(index: int):
+    shutil.move("/etc/exports", "/etc/exports~")
+    i: int = 0
+    with open("/etc/exports~", "r") as exports:
+        new = open("/etc/exports", "a")
+        line = exports.readline()
+        while line != "":
+            if (index - 1) == i:
+                i += 1
+            else:
+                new.write(line)
+            i += 1
+            line = exports.readline()
+        new.truncate()
+        new.close()
+    os.remove("/etc/exports~")
 
 def get_line(path: str):
     i: int = 0
