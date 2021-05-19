@@ -108,6 +108,7 @@ def change_line(index: int, newline: str):
         data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
         for line in data:
+            print(str(i) + " " + str(index))
             if index == i:
                 new.write(newline + "\n")
             else:
