@@ -21,7 +21,7 @@ def main(arguments: list):
             create_dir(arguments[1])
             change_ownership(arguments[1])
         change_line(
-            get_line_count(), build_line(arguments[1], arguments[2], get_options())
+            get_line_count(), build_line(arguments[1], arguments[2], set_options())
         )
         print("Added")
     elif arguments[0] == "edit":
@@ -30,7 +30,7 @@ def main(arguments: list):
             exit()
         change_line(
             line_n,
-            build_line(arguments[1], arguments[2], get_options()),
+            build_line(arguments[1], arguments[2], set_options()),
         )
         print("Edited")
     elif arguments[0] == "stop":
@@ -39,7 +39,7 @@ def main(arguments: list):
             exit()
         change_line(
             line_n,
-            build_line(arguments[1], arguments[2], get_options(), enabled=False),
+            build_line(arguments[1], arguments[2], set_options(), enabled=False),
         )
 
         print("Stopped")
@@ -75,6 +75,7 @@ def fix_file():
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
+    trim_whitespace()
 
 
 def get_line(path: str, ip: str):
@@ -118,6 +119,7 @@ def change_line(index: int, newline: str):
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
+    trim_whitespace()
 
 
 def remove_line(index: int):
@@ -137,9 +139,10 @@ def remove_line(index: int):
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
+    trim_whitespace()
 
 
-def get_options():
+def set_options():
     option: int = 0
     print(
         "Choose your NFS directory config:\n"
@@ -202,6 +205,10 @@ def create_dir(path: str):
 
 def remove_dir(path: str):
     subprocess.run(["rm", "-rf", path], check=True)
+
+
+def trim_whitespace():
+    subprocess.run(["tr", "-s", "/etc/exports"], check=True)
 
 
 if __name__ == "__main__":

@@ -205,11 +205,14 @@ def fix_file(file: str):
 
 def get_line(path: str, file: str):
     fix_file(file)
+    i: int = 0
     with open(file, "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
-            if path in line:
+            if line.__contains__(path) and line.__contains__(ip):
+                print(str(i) + ": " + path + " in " + line)
                 return i
+            i += 1
     return -1
 
 
@@ -262,6 +265,7 @@ def remove_block(index: int, file: str, size: int):
         new.truncate()
         new.close()
     os.remove(workingfile)
+    trim_whitespace(file)
 
 
 def change_block(index: int, file: str, block: list):
@@ -286,6 +290,7 @@ def change_block(index: int, file: str, block: list):
         new.truncate()
         new.close()
     os.remove(workingfile)
+    trim_whitespace(file)
 
 
 def add_block(index: int, file: str, block: list):
@@ -308,6 +313,7 @@ def add_block(index: int, file: str, block: list):
         new.truncate()
         new.close()
     os.remove(workingfile)
+    trim_whitespace(file)
 
 
 def symlink_website(name: str):
@@ -337,6 +343,10 @@ def add_example_page(path: str):
 
 def sysctl():
     subprocess.run(["systemctl", "restart", "httpd"], check=True)
+
+
+def trim_whitespace(file: str):
+    subprocess.run(["tr", "-s", file], check=True)
 
 
 if __name__ == "__main__":

@@ -223,11 +223,14 @@ def fix_file():
 
 def get_line(path: str):
     fix_file()
+    i: int = 0
     with open("/etc/samba/smb.conf", "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
-            if path in line:
+            if line.__contains__(path) and line.__contains__(ip):
+                print(str(i) + ": " + path + " in " + line)
                 return i
+            i += 1
     return -1
 
 
@@ -279,6 +282,7 @@ def remove_block(index: int):
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
+    trim_whitespace()
 
 
 def change_block(index: int, block: list):
@@ -302,6 +306,7 @@ def change_block(index: int, block: list):
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
+    trim_whitespace()
 
 
 def add_block(index: int, block: list):
@@ -323,6 +328,7 @@ def add_block(index: int, block: list):
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
+    trim_whitespace()
 
 
 def change_ownership(
@@ -380,6 +386,10 @@ def disable_user(user: str = "sambauser"):
 
 def delete_user(user: str = "sambauser"):
     subprocess.run(["userdel", "-r", user], check=True)
+
+
+def trim_whitespace():
+    subprocess.run(["tr", "-s", "/etc/samba/smb.conf"], check=True)
 
 
 if __name__ == "__main__":
