@@ -31,8 +31,7 @@ def sysprep():
         path: str = str(
             input("Please type where do you want to SAMBA (pun intended): ")
         )
-        if not os.path.exists(os.path.dirname(path)):
-            create_dir(path)
+        create_dir(path)
         create_group()
         change_group(path)
         change_permissions(path)
