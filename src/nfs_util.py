@@ -13,7 +13,7 @@ def main(arguments: list):
             exit()
 
     if arguments[0] == "add":
-        if not get_line(arguments[1]) != 0:
+        if get_line(arguments[1]) != 0:
             print("That directory is already being shared.")
             exit()
         if not os.path.exists(os.path.dirname(arguments[1])):
@@ -77,6 +77,7 @@ def change_line(index: int, newline: str):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
@@ -95,6 +96,7 @@ def remove_line(index: int):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
@@ -104,11 +106,12 @@ def get_line(path: str):
     with open("/etc/exports", "r") as exports:
         line = exports.readline()
         while line != "":
+            print(line)
             if line.find(path) != -1:
                 return i
             i += 1
             line = exports.readline()
-    return 0
+    return -1
 
 
 def get_line_count():

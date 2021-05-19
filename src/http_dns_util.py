@@ -248,6 +248,8 @@ def remove_block(index: int, file: str, size: int):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
+        new.truncate()
         new.close()
     os.remove(workingfile)
 
@@ -270,6 +272,8 @@ def change_block(index: int, file: str, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
+        new.truncate()
         new.close()
     os.remove(workingfile)
 
@@ -290,6 +294,8 @@ def add_block(index: int, file: str, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
+        new.truncate()
         new.close()
     os.remove(workingfile)
 

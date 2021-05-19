@@ -262,6 +262,8 @@ def remove_block(index: int):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
+        new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
 
@@ -283,6 +285,8 @@ def change_block(index: int, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
+        new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
 
@@ -302,6 +306,8 @@ def add_block(index: int, block: list):
                 new.write(line)
             i += 1
             line = exports.readline()
+        new.write("\n")
+        new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
 
