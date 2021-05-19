@@ -196,6 +196,7 @@ def change_ownership(path: str):
         subprocess.run(["chown", "nobody:nobody", path], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def create_dir(path: str):
@@ -203,6 +204,7 @@ def create_dir(path: str):
         os.makedirs(path, mode=0o770, exist_ok=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def remove_dir(path: str):

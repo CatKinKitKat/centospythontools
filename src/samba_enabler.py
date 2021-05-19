@@ -37,11 +37,13 @@ def sysctl(action: str):
         subprocess.run(["systemctl", action, "smb"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
     try:
         subprocess.run(["systemctl", action, "nmb"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def yum(action: str):
@@ -49,6 +51,7 @@ def yum(action: str):
         subprocess.run(["yum", action, "samba", "-y"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 if __name__ == "__main__":

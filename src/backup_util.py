@@ -31,6 +31,7 @@ def backup(path: str):
         subprocess.run(backpath.split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
     print("RSync Backup at " + path)
     exit()
@@ -40,10 +41,14 @@ def encrypted_backup(path: str):
 
     if not os.path.exists("/crypt/rsynckey.key"):
         os.makedirs("/crypt", mode=0o755, exist_ok=True)
-        subprocess.run(
-            "openssl req -nodes -newkey rsa:1536 -x509 -keyout /crypt/rsynckey.key -out /crypt/rsynckey.crt".split(),
-            check=True,
-        )
+        try:
+            subprocess.run(
+                "openssl req -nodes -newkey rsa:1536 -x509 -keyout /crypt/rsynckey.key -out /crypt/rsynckey.crt".split(),
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            print(e.output)
+            exit()
 
     if not os.path.exists(path):
         os.makedirs(path, mode=0o755, exist_ok=True)
@@ -54,6 +59,7 @@ def encrypted_backup(path: str):
         subprocess.run("rsync -zrvh /etc /tmp/backup".split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
     # --verbose --ne-nesting=2 --trim=2 --name-encrypt=/tmp/rsyncrypto-map --delete-keys --changed
     try:
         subprocess.run(
@@ -62,12 +68,14 @@ def encrypted_backup(path: str):
         )
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
     shutil.rmtree("/tmp/backup")
     backpath = "rsync -zrvh /tmp/encrypted " + path
     try:
         subprocess.run(backpath.split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
     shutil.rmtree("/tmp/encrypted")
 
     print("Encrypted RSync Backup at " + path)

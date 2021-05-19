@@ -58,6 +58,7 @@ def add_forward(alias: str, ip: str):
             subprocess.run(["touch", file], check=True)
         except subprocess.CalledProcessError as e:
             print(e.output)
+            exit()
         add_block(get_line_count(file), file, build_table_forward_block(alias, ip))
 
 
@@ -84,6 +85,7 @@ def add_reverse(alias: str, ip: str):
             subprocess.run(["touch", file], check=True)
         except subprocess.CalledProcessError as e:
             print(e.output)
+            exit()
         add_block(
             get_line_count(file), file, build_table_reverse_block(alias, ip_spliter(ip))
         )
@@ -326,6 +328,7 @@ def symlink_website(name: str):
         subprocess.run(["ln", "-s", config, link], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def create_vhost_directory(path: str):
@@ -346,6 +349,7 @@ def add_example_page(path: str):
         subprocess.run(command.split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def sysctl():
@@ -353,6 +357,7 @@ def sysctl():
         subprocess.run(["systemctl", "restart", "httpd"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 if __name__ == "__main__":

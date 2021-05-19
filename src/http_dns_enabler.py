@@ -42,11 +42,13 @@ def sysctl(action: str):
         subprocess.run(["systemctl", action, "named"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
     try:
         subprocess.run(["systemctl", action, "httpd"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def yum(action: str):
@@ -54,6 +56,7 @@ def yum(action: str):
         subprocess.run(["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 if __name__ == "__main__":

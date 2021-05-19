@@ -37,6 +37,7 @@ def sysctl(action: str):
         subprocess.run(["systemctl", action, "nfs"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 def yum(action: str):
@@ -44,6 +45,7 @@ def yum(action: str):
         subprocess.run(["yum", action, "nfs-util", "-y"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
+        exit()
 
 
 if __name__ == "__main__":
