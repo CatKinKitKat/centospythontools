@@ -346,7 +346,7 @@ def sysctl():
 
 
 def trim_whitespace(file: str):
-    subprocess.run(["tr", "-s", file], check=True)
+    subprocess.run(["tr", "-s", "\\n", file], check=True)
 
 
 if __name__ == "__main__":

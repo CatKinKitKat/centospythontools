@@ -208,7 +208,7 @@ def remove_dir(path: str):
 
 
 def trim_whitespace():
-    subprocess.run(["tr", "-s", "/etc/exports"], check=True)
+    subprocess.run(["tr", "-s", "\\n","/etc/exports"], check=True)
 
 
 if __name__ == "__main__":
