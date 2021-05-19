@@ -221,14 +221,13 @@ def fix_file():
     os.remove("/etc/samba/smb.conf~")
 
 
-def get_line(path: str):
+def get_line(share: str):
     fix_file()
     i: int = 0
     with open("/etc/samba/smb.conf", "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
-            if line.__contains__(path) and line.__contains__(ip):
-                print(str(i) + ": " + path + " in " + line)
+            if line.__contains__(share):
                 return i
             i += 1
     return -1

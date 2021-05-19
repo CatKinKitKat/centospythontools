@@ -84,7 +84,6 @@ def get_line(path: str, ip: str):
         data: list = exports.read().split("\n")
         for line in data:
             if line.__contains__(path) and line.__contains__(ip):
-                print(str(i) + ": " + path + " in " + line)
                 return i
             i += 1
     return -1

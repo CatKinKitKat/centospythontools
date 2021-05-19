@@ -203,14 +203,13 @@ def fix_file(file: str):
     os.remove(workingfile)
 
 
-def get_line(path: str, file: str):
+def get_line(conf: str, file: str):
     fix_file(file)
     i: int = 0
     with open(file, "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
-            if line.__contains__(path) and line.__contains__(ip):
-                print(str(i) + ": " + path + " in " + line)
+            if line.__contains__(conf):
                 return i
             i += 1
     return -1
