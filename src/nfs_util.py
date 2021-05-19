@@ -69,7 +69,6 @@ def fix_file():
     shutil.move("/etc/exports", "/etc/exports~")
     with open("/etc/exports~", "r") as exports:
         data = exports.read().replace("\r\n", "\n")
-        data = data.replace("\n", "\n\00")
         new = open("/etc/exports", "a")
         new.write(data)
         new.truncate()
@@ -77,20 +76,28 @@ def fix_file():
     os.remove("/etc/exports~")
 
 
+def get_line(path: str):
+    fix_file()
+    with open("/etc/exports", "r") as exports:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if path in line:
+                return i
+    return -1
+
+
 def change_line(index: int, newline: str):
     fix_file()
     shutil.move("/etc/exports", "/etc/exports~")
     i: int = 0
     with open("/etc/exports~", "r") as exports:
+        data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
-        line = exports.readline()
-        while line != "":
+        for i, line in data:
             if (index - 1) == i:
                 new.write(newline)
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
@@ -102,41 +109,26 @@ def remove_line(index: int):
     shutil.move("/etc/exports", "/etc/exports~")
     i: int = 0
     with open("/etc/exports~", "r") as exports:
+        data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
-        line = exports.readline()
-        while line != "":
+        for i, line in data:
             if (index - 1) == i:
                 i += 1
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
 
 
-def get_line(path: str):
-    fix_file()
-    exports = open("/etc/exports", "r")
-    for i, line in enumerate(exports):
-        print(str(i) + " " + line)
-        if path in line:
-            exports.close()
-            return i
-    exports.close()
-    return -1
-
-
 def get_line_count():
     fix_file()
     count: int = 0
     with open("/etc/exports", "r") as exports:
-        line = exports.readline()
-        while line != "":
-            count += 1
-            line = exports.readline()
+        data: list = exports.read().split("\n")
+        for i in data:
+            count = i
     return count
 
 

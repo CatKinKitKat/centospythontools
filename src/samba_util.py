@@ -213,7 +213,7 @@ def truefalse(polarity: str):
 def fix_file():
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
     with open("/etc/samba/smb.conf~", "r") as exports:
-        data = exports.read().replace("\n", "")
+        data = exports.read().replace("\r\n", "\n")
         new = open("/etc/samba/smb.conf", "a")
         new.write(data)
         new.truncate()
@@ -223,12 +223,11 @@ def fix_file():
 
 def get_line(path: str):
     fix_file()
-    exports = open("/etc/samba/smb.conf", "r")
-    for i, line in enumerate(exports):
-        if path in line:
-            exports.close()
-            return i
-    exports.close()
+    with open("/etc/samba/smb.conf", "r") as exports:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if path in line:
+                return i
     return -1
 
 
@@ -236,49 +235,42 @@ def get_line_count():
     fix_file()
     count: int = 0
     with open("/etc/samba/smb.conf", "r") as exports:
-        line = exports.readline()
-        while line != "":
-            count += 1
-            line = exports.readline()
+        data: list = exports.read().split("\n")
+        for i in data:
+            count = i
     return count
 
 
 def get_block(index: int):
     fix_file()
     jumps: int = 0
-    i: int = 0
     block: list = []
     with open("/etc/samba/smb.conf", "r") as exports:
-        line = exports.readline()
-        while line != "":
-            if (index - 1) == i:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if index == i:
                 if jumps < 7:
                     block.append(line)
                     jumps += 1
                     index += 1
-            i += 1
-            line = exports.readline()
     return block
 
 
 def remove_block(index: int):
     fix_file()
     jumps: int = 0
-    i: int = 0
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
-        line = exports.readline()
-        while line != "":
-            if (index - 1) == i:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if index == i:
                 if jumps < 7:
                     # Just skip
                     jumps += 1
                     index += 1
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
@@ -292,17 +284,15 @@ def change_block(index: int, block: list):
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
-        line = exports.readline()
-        while line != "":
-            if (index - 1) == i:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if index == i:
                 if jumps < 7:
                     new.write(block[jumps])
                     jumps += 1
                     index += 1
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
@@ -315,16 +305,14 @@ def add_block(index: int, block: list):
     shutil.move("/etc/samba/smb.conf", "/etc/samba/smb.conf~")
     with open("/etc/samba/smb.conf~", "r") as exports:
         new = open("/etc/samba/smb.conf", "a")
-        line = exports.readline()
-        while line != "":
-            if (index - 1) == i:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if index == i:
                 for i in range(0, len(block)):
                     i += 1
                     new.write(block[i])
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()

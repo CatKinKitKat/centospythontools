@@ -195,7 +195,7 @@ def fix_file(file: str):
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
-        data = exports.read().replace("\n", "")
+        data = exports.read().replace("\r\n", "\n")
         new = open(file, "a")
         new.write(data)
         new.truncate()
@@ -205,12 +205,11 @@ def fix_file(file: str):
 
 def get_line(path: str, file: str):
     fix_file(file)
-    exports = open(file, "r")
-    for i, line in enumerate(exports):
-        if path in line:
-            exports.close()
-            return i
-    exports.close()
+    with open(file, "r") as exports:
+        data: list = exports.read().split("\n")
+        for i, line in data:
+            if path in line:
+                return i
     return -1
 
 
@@ -218,41 +217,36 @@ def get_line_count(file: str):
     fix_file(file)
     count: int = 0
     with open(file, "r") as exports:
-        line = exports.readline()
-        while line != "":
-            count += 1
-            line = exports.readline()
+        data: list = exports.read().split("\n")
+        for i in data:
+            count = i
     return count
 
 
 def get_block(index: int, file: str):
     fix_file(file)
     jumps: int = 0
-    i: int = 0
     block: list = []
     with open(file, "r") as exports:
-        line = exports.readline()
-        while line != "":
+        data: list = exports.read().split("\n")
+        for i, line in data:
             if (index - 1) == i:
                 if jumps < 7:
                     block.append(line)
                     jumps += 1
                     index += 1
-            i += 1
-            line = exports.readline()
     return block
 
 
 def remove_block(index: int, file: str, size: int):
     fix_file(file)
     jumps: int = 0
-    i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
         new = open(file, "a")
-        line = exports.readline()
-        while line != "":
+        data: list = exports.read().split("\n")
+        for i, line in data:
             if (index - 1) == i:
                 if jumps < size:
                     # Just skip
@@ -260,8 +254,6 @@ def remove_block(index: int, file: str, size: int):
                     index += 1
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
@@ -271,13 +263,12 @@ def remove_block(index: int, file: str, size: int):
 def change_block(index: int, file: str, block: list):
     fix_file(file)
     jumps: int = 0
-    i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
         new = open(file, "a")
-        line = exports.readline()
-        while line != "":
+        data: list = exports.read().split("\n")
+        for i, line in data:
             if (index - 1) == i:
                 if jumps < 7:
                     new.write(block[jumps])
@@ -285,8 +276,6 @@ def change_block(index: int, file: str, block: list):
                     index += 1
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
@@ -295,21 +284,18 @@ def change_block(index: int, file: str, block: list):
 
 def add_block(index: int, file: str, block: list):
     fix_file(file)
-    i: int = 0
     workingfile: str = file + "~"
     shutil.move(file, workingfile)
     with open(workingfile, "r") as exports:
         new = open(file, "a")
-        line = exports.readline()
-        while line != "":
+        data: list = exports.read().split("\n")
+        for i, line in data:
             if (index - 1) == i:
                 for i in range(0, len(block)):
                     i += 1
                     new.write(block[i])
             else:
                 new.write(line)
-            i += 1
-            line = exports.readline()
         new.write("")
         new.truncate()
         new.close()
