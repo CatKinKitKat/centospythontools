@@ -12,8 +12,9 @@ def main(arguments: list):
             print("The only accepted types are add|edit|stop|delete.")
             exit()
 
+    line_n: int = get_line(arguments[1], arguments[2])
     if arguments[0] == "add":
-        if get_line(arguments[1]) >= 0:
+        if line_n >= 0:
             print("That directory is already being shared.")
             exit()
         if not os.path.exists(os.path.dirname(arguments[1])):
@@ -24,29 +25,29 @@ def main(arguments: list):
         )
         print("Added")
     elif arguments[0] == "edit":
-        if get_line(arguments[1]) < 0:
+        if line_n < 0:
             print("That directory is not being shared.")
             exit()
         change_line(
-            get_line(arguments[1]),
+            line_n,
             build_line(arguments[1], arguments[2], get_options()),
         )
         print("Edited")
     elif arguments[0] == "stop":
-        if get_line(arguments[1]) < 0:
+        if line_n < 0:
             print("That directory is not being shared.")
             exit()
         change_line(
-            get_line(arguments[1]),
+            line_n,
             build_line(arguments[1], arguments[2], get_options(), enabled=False),
         )
 
         print("Stopped")
     elif arguments[0] == "delete":
-        if get_line(arguments[1]) < 0:
+        if line_n < 0:
             print("That directory is not being shared.")
             exit()
-        remove_line(get_line(arguments[1]))
+        remove_line(line_n)
         if (
             str(input("Removed\n Also Delete directory and contents? (yes/no): "))
             != "yes"
@@ -76,13 +77,13 @@ def fix_file():
     os.remove("/etc/exports~")
 
 
-def get_line(path: str):
+def get_line(path: str, ip: str):
     fix_file()
     i: int = 0
     with open("/etc/exports", "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
-            if path in line:
+            if line.__contains__(path) and line.__contains__(ip):
                 print(str(i) + ": " + path + " in " + line)
                 return i
             i += 1
