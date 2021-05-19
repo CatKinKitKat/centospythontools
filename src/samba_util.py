@@ -233,7 +233,7 @@ def get_line(path: str):
 
 def get_line_count():
     fix_file()
-    count: int = 0
+    count: int = -1
     with open("/etc/samba/smb.conf", "r") as exports:
         data: list = exports.read().split("\n")
         for line in data:
