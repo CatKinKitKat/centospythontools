@@ -95,8 +95,8 @@ def get_line_count():
     count: int = 0
     with open("/etc/exports", "r") as exports:
         data: list = exports.read().split("\n")
-        for i in data:
-            count += i
+        for line in data:
+            count += 1
     return count
 
 
