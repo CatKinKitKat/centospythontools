@@ -78,11 +78,13 @@ def fix_file():
 
 def get_line(path: str):
     fix_file()
+    i: int = 0
     with open("/etc/exports", "r") as exports:
         data: list = exports.read().split("\n")
-        for i, line in data:
+        for line in data:
             if path in line:
                 return i
+            i += 1
     return -1
 
 
@@ -93,11 +95,12 @@ def change_line(index: int, newline: str):
     with open("/etc/exports~", "r") as exports:
         data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
-        for i, line in data:
+        for line in data:
             if (index - 1) == i:
                 new.write(newline)
             else:
                 new.write(line)
+            i += 1
         new.write("")
         new.truncate()
         new.close()
@@ -111,11 +114,12 @@ def remove_line(index: int):
     with open("/etc/exports~", "r") as exports:
         data: list = exports.read().split("\n")
         new = open("/etc/exports", "a")
-        for i, line in data:
+        for line in data:
             if (index - 1) == i:
                 i += 1
             else:
                 new.write(line)
+            i += 1
         new.write("")
         new.truncate()
         new.close()
@@ -128,7 +132,7 @@ def get_line_count():
     with open("/etc/exports", "r") as exports:
         data: list = exports.read().split("\n")
         for i in data:
-            count = i
+            count += i
     return count
 
 
