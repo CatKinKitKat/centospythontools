@@ -214,6 +214,7 @@ def fix_file():
         data = exports.read().replace("\r\n", "\n")
         new = open("/etc/samba/smb.conf", "a")
         new.write(data)
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
@@ -276,6 +277,7 @@ def remove_block(index: int):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
@@ -299,6 +301,7 @@ def change_block(index: int, block: list):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")
@@ -320,6 +323,7 @@ def add_block(index: int, block: list):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/samba/smb.conf~")

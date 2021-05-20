@@ -71,6 +71,7 @@ def fix_file():
         data = exports.read().replace("\r\n", "\n")
         new = open("/etc/exports", "a")
         new.write(data)
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
@@ -113,6 +114,7 @@ def change_line(index: int, newline: str):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/exports~")
@@ -132,6 +134,7 @@ def remove_line(index: int):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove("/etc/exports~")

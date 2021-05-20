@@ -207,6 +207,7 @@ def fix_file(file: str):
         data = exports.read().replace("\r\n", "\n")
         new = open(file, "a")
         new.write(data)
+        new.flush()
         new.truncate()
         new.close()
     os.remove(workingfile)
@@ -270,6 +271,7 @@ def remove_block(index: int, file: str, size: int):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove(workingfile)
@@ -294,6 +296,7 @@ def change_block(index: int, file: str, block: list):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove(workingfile)
@@ -316,6 +319,7 @@ def add_block(index: int, file: str, block: list):
                 new.write(line + "\n")
             i += 1
         new.write("")
+        new.flush()
         new.truncate()
         new.close()
     os.remove(workingfile)
