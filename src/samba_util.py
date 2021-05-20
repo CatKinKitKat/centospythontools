@@ -148,15 +148,15 @@ def edit_share():
     path: str = str(input("Where: "))
 
     browseable: str = str(input("Browseable (yes/no): "))
-    while browseable != "yes" or browseable != "no":
-        browseable = str(input("Browseable (yes/no): "))
+    if browseable != "yes":
+        browseable = "no"
     readonly: str = str(input("Read only (yes/no): "))
-    while readonly != "yes" or readonly != "no":
-        readonly = str(input("Read only (yes/no): "))
+    if readonly != "yes":
+        readonly = "no"
 
     line_n = get_line(str("[" + name + "]"))
     if line_n < 0:
-        line_n = 0
+        line_n = get_line_count()
 
     change_block(
         line_n,
