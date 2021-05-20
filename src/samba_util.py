@@ -125,11 +125,11 @@ def add_share():
         change_permissions(path=path)
 
     browseable: str = str(input("Browseable (yes/no): "))
-    while browseable != "yes" or browseable != "no":
-        browseable = str(input("Browseable (yes/no): "))
+    if browseable != "yes":
+        browseable = "no"
     readonly: str = str(input("Read only (yes/no): "))
-    while readonly != "yes" or readonly != "no":
-        readonly = str(input("Read only (yes/no): "))
+    if readonly != "yes":
+        readonly = "no"
 
     add_block(
         get_line_count(),
