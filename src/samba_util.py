@@ -191,7 +191,7 @@ def build_block(
         str("    read only = " + yesno(readonly)),
         "    force create mode = 0660",
         "    force directory mode = 2770",
-        str("    valid users 0 " + user + " " + users),
+        str("    valid users = " + user + " " + users),
     ]
     return block
 
