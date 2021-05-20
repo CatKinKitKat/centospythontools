@@ -7,19 +7,18 @@ def main(arguments: list):
     if len(arguments) != 3:
         if arguments[0] == "help":
             print("nfs_util.py add|edit|stop|delete /path/to/nfs ip.ad.dr.ess")
-            exit()
+            sys.exit()
         else:
             print("The only accepted types are add|edit|stop|delete.")
-            exit()
+            sys.exit()
 
     line_n: int = get_line(arguments[1], arguments[2])
     if arguments[0] == "add":
         if line_n >= 0:
             print("That directory is already being shared.")
-            exit()
-        if not os.path.exists(os.path.dirname(arguments[1])):
-            create_dir(arguments[1])
-            change_ownership(arguments[1])
+            sys.exit()
+        create_dir(arguments[1])
+        change_ownership(arguments[1])
         change_line(
             get_line_count(), build_line(arguments[1], arguments[2], set_options())
         )
@@ -27,7 +26,7 @@ def main(arguments: list):
     elif arguments[0] == "edit":
         if line_n < 0:
             print("That directory is not being shared.")
-            exit()
+            sys.exit()
         change_line(
             line_n,
             build_line(arguments[1], arguments[2], set_options()),
@@ -36,7 +35,7 @@ def main(arguments: list):
     elif arguments[0] == "stop":
         if line_n < 0:
             print("That directory is not being shared.")
-            exit()
+            sys.exit()
         change_line(
             line_n,
             build_line(arguments[1], arguments[2], set_options(), enabled=False),
@@ -46,7 +45,7 @@ def main(arguments: list):
     elif arguments[0] == "delete":
         if line_n < 0:
             print("That directory is not being shared.")
-            exit()
+            sys.exit()
         remove_line(line_n)
         if (
             str(input("Removed\n Also Delete directory and contents? (yes/no): "))
@@ -55,7 +54,7 @@ def main(arguments: list):
             remove_dir(arguments[1])
             print("Deleted")
 
-    exit()
+    sys.exit()
 
 
 def build_line(path: str, destination: str, options: str, enabled: bool = True):
@@ -196,15 +195,12 @@ def change_ownership(path: str):
         subprocess.run(["chown", "nobody:nobody", path], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 def create_dir(path: str):
-    try:
+    if not os.path.isdir(path):
         os.makedirs(path, mode=0o770, exist_ok=True)
-    except subprocess.CalledProcessError as e:
-        print(e.output)
-        exit()
 
 
 def remove_dir(path: str):

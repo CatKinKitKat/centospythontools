@@ -6,7 +6,7 @@ import sys, subprocess
 def main(arguments: list):
     if len(arguments) != 1:
         print("samba_enabler.py install|uninstal|start|stop|enable|disable|restart")
-        exit()
+        sys.exit()
 
     if arguments[0] == "help":
         print("samba_enabler.py install|uninstal|start|stop|enable|disable|restart")
@@ -29,7 +29,7 @@ def main(arguments: list):
     elif arguments[0] == "restart":
         sysctl("restart")
 
-    exit()
+    sys.exit()
 
 
 def sysctl(action: str):
@@ -37,13 +37,13 @@ def sysctl(action: str):
         subprocess.run(["systemctl", action, "smb"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
     try:
         subprocess.run(["systemctl", action, "nmb"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 def yum(action: str):
@@ -51,7 +51,7 @@ def yum(action: str):
         subprocess.run(["yum", action, "samba", "-y"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 if __name__ == "__main__":

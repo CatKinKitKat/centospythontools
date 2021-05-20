@@ -16,7 +16,7 @@ def main(arguments: list):
                 "nfs_util.py remove forward alias.com\n"
                 "nfs_util.py remove reverse alias.com ip.ad.dr.ess\n"
             )
-            exit()
+            sys.exit()
         elif arguments[0] == "add":
             if arguments[1] == "all":
                 add_vhost(arguments[2], arguments[4])
@@ -41,7 +41,7 @@ def main(arguments: list):
                 remove_reverse(arguments[2], arguments[3])
 
     print("The only accepted types are add|remove all|vhost|forward|reverse.")
-    exit()
+    sys.exit()
 
 
 def add_forward(alias: str, ip: str):
@@ -58,7 +58,7 @@ def add_forward(alias: str, ip: str):
             subprocess.run(["touch", file], check=True)
         except subprocess.CalledProcessError as e:
             print(e.output)
-            exit()
+            sys.exit()
         add_block(get_line_count(file), file, build_table_forward_block(alias, ip))
 
 
@@ -85,7 +85,7 @@ def add_reverse(alias: str, ip: str):
             subprocess.run(["touch", file], check=True)
         except subprocess.CalledProcessError as e:
             print(e.output)
-            exit()
+            sys.exit()
         add_block(
             get_line_count(file), file, build_table_reverse_block(alias, ip_spliter(ip))
         )
@@ -328,20 +328,22 @@ def symlink_website(name: str):
         subprocess.run(["ln", "-s", config, link], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 def create_vhost_directory(path: str):
     path = path + "/public_html"
-    os.makedirs(path, mode=0o770, exist_ok=True)
+    if not os.path.isdir(path):
+        os.makedirs(path, mode=0o770, exist_ok=True)
 
 
 def create_directory(path: str):
-    os.makedirs(path, mode=0o770, exist_ok=True)
+    if not os.path.isdir(path):
+        os.makedirs(path, mode=0o770, exist_ok=True)
 
 
 def add_example_page(path: str):
-    if not os.path.exists(os.path.dirname(path)):
+    if not os.path.isdir(path):
         create_vhost_directory(path)
 
     command: str = 'echo "<h1>Welcome!</h1>" >> ' + path + "/public_html/index.html"
@@ -349,7 +351,7 @@ def add_example_page(path: str):
         subprocess.run(command.split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 def sysctl():
@@ -357,7 +359,7 @@ def sysctl():
         subprocess.run(["systemctl", "restart", "httpd"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 if __name__ == "__main__":

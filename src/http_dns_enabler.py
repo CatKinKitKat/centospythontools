@@ -6,7 +6,7 @@ import os, sys, subprocess
 def main(arguments: list):
     if len(arguments) != 1:
         print("http_dns_enabler.py install|uninstal|start|stop|enable|disable|restart")
-        exit()
+        sys.exit()
 
     if arguments[0] == "help":
         print("http_dns_enabler.py install|uninstal|start|stop|enable|disable|restart")
@@ -30,11 +30,12 @@ def main(arguments: list):
     elif arguments[0] == "restart":
         sysctl("restart")
 
-    exit()
+    sys.exit()
 
 
 def create_vhosts_directory():
-    os.makedirs("/etc/httpd/sites-available", mode=0o755, exist_ok=True)
+    if not os.path.isdir("/etc/httpd/sites-available"):
+        os.makedirs("/etc/httpd/sites-available", mode=0o755, exist_ok=True)
 
 
 def sysctl(action: str):
@@ -42,13 +43,13 @@ def sysctl(action: str):
         subprocess.run(["systemctl", action, "named"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
     try:
         subprocess.run(["systemctl", action, "httpd"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 def yum(action: str):
@@ -56,7 +57,7 @@ def yum(action: str):
         subprocess.run(["yum", action, "bind", "bind-utils", "httpd", "-y"], check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
 
 if __name__ == "__main__":

@@ -7,10 +7,10 @@ def main(arguments: list):
     if len(arguments) != 2:
         if arguments[0] == "help":
             print("backup_util.py regular|encrypted /path/to/backup")
-            exit()
+            sys.exit()
         else:
             print("The only accepted types are regular|encrypted.")
-            exit()
+            sys.exit()
 
     if arguments[0] == "regular":
         backup(arguments[1])
@@ -18,12 +18,12 @@ def main(arguments: list):
         encrypted_backup(arguments[1])
     else:
         print("There can be only 2 arguments:\nThe type and path of backup.")
-        exit()
+        sys.exit()
 
 
 def backup(path: str):
 
-    if not os.path.exists(path):
+    if not os.path.isdir(path):
         os.makedirs(path, mode=0o755, exist_ok=True)
 
     backpath = "rsync -zavh /etc " + path
@@ -31,15 +31,15 @@ def backup(path: str):
         subprocess.run(backpath.split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
 
     print("RSync Backup at " + path)
-    exit()
+    sys.exit()
 
 
 def encrypted_backup(path: str):
 
-    if not os.path.exists("/crypt/rsynckey.key"):
+    if not os.path.isdir("/crypt/rsynckey.key"):
         os.makedirs("/crypt", mode=0o755, exist_ok=True)
         try:
             subprocess.run(
@@ -48,18 +48,20 @@ def encrypted_backup(path: str):
             )
         except subprocess.CalledProcessError as e:
             print(e.output)
-            exit()
+            sys.exit()
 
-    if not os.path.exists(path):
+    if not os.path.isdir(path):
         os.makedirs(path, mode=0o755, exist_ok=True)
 
-    os.makedirs("/tmp/backup", mode=0o755, exist_ok=True)
-    os.makedirs("/tmp/encrypted", mode=0o755, exist_ok=True)
+    if not os.path.isdir("/tmp/backup"):
+        os.makedirs("/tmp/backup", mode=0o755, exist_ok=True)
+    if not os.path.isdir("/tmp/encrypted"):
+        os.makedirs("/tmp/encrypted", mode=0o755, exist_ok=True)
     try:
         subprocess.run("rsync -zrvh /etc /tmp/backup".split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
     # --verbose --ne-nesting=2 --trim=2 --name-encrypt=/tmp/rsyncrypto-map --delete-keys --changed
     try:
         subprocess.run(
@@ -68,18 +70,18 @@ def encrypted_backup(path: str):
         )
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
     shutil.rmtree("/tmp/backup")
     backpath = "rsync -zrvh /tmp/encrypted " + path
     try:
         subprocess.run(backpath.split(), check=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
-        exit()
+        sys.exit()
     shutil.rmtree("/tmp/encrypted")
 
     print("Encrypted RSync Backup at " + path)
-    exit()
+    sys.exit()
 
 
 if __name__ == "__main__":
