@@ -186,12 +186,12 @@ def build_block(
 ):
     block: list = [
         str("[" + name + "]"),
-        str("    path = " + path),
-        str("    browseable = " + yesno(browseable)),
-        str("    read only = " + yesno(readonly)),
-        "    force create mode = 0660",
-        "    force directory mode = 2770",
-        str("    valid users = " + user + " " + users),
+        str("        path = " + path),
+        str("        browseable = " + yesno(browseable)),
+        str("        read only = " + yesno(readonly)),
+        "        force create mode = 0660",
+        "        force directory mode = 2770",
+        str("        valid users = " + user + " " + users),
     ]
     return block
 
