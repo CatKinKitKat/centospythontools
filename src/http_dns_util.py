@@ -39,8 +39,9 @@ def main(arguments: list):
                 remove_forward(arguments[2])
             elif arguments[1] == "reverse":
                 remove_reverse(arguments[2], arguments[3])
-
-    print("The only accepted types are add|remove all|vhost|forward|reverse.")
+        else:
+            print("The only accepted types are add|remove all|vhost|forward|reverse.")
+    
     sys.exit()
 
 
