@@ -19,9 +19,9 @@ def main(arguments: list):
             sys.exit()
         elif arguments[0] == "add":
             if arguments[1] == "all":
-                add_vhost(arguments[2], arguments[4])
                 add_forward(arguments[2], arguments[3])
                 add_reverse(arguments[2], arguments[3])
+                add_vhost(arguments[2], arguments[4])
             elif arguments[1] == "vhost":
                 add_vhost(arguments[2], arguments[4])
             elif arguments[1] == "forward":
@@ -30,9 +30,9 @@ def main(arguments: list):
                 add_reverse(arguments[2], arguments[3])
         elif arguments[0] == "remove":
             if arguments[1] == "all":
-                remove_vhost(arguments[2])
                 remove_forward(arguments[2])
                 remove_reverse(arguments[2], arguments[3])
+                remove_vhost(arguments[2])
             elif arguments[1] == "vhost":
                 remove_vhost(arguments[2])
             elif arguments[1] == "forward":
