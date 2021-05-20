@@ -162,9 +162,10 @@ def build_table_forward_block(alias: str, ip: str):
         "     86400 ;Minimum TTL",
         ")",
         "@    IN NS  localhost.localdomain.",
-        str("@    IN A   " + ip),
-        str("www  IN A   " + ip),
-        str("mail IN A   " + ip),
+        str("@    IN MX 10 as-smtp." + alias),
+        str("@    IN A     " + ip),
+        str("www  IN A     " + ip),
+        str("mail IN A     " + ip),
     ]
     return block
 
@@ -182,7 +183,6 @@ def build_table_reverse_block(alias: str, last: str):
         "@    IN NS  localhost.localdomain.",
         str(last + "   IN PTR   " + alias + "."),
         str(last + "   IN PTR   www." + alias + "."),
-        str(last + "   IN MX    mail." + alias + "."),
     ]
     return block
 
