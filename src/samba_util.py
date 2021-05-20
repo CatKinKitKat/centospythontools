@@ -313,9 +313,9 @@ def add_block(index: int, block: list):
         data: list = exports.read().split("\n")
         for line in data:
             if index == i:
-                for i in range(0, len(block)):
+                for j in range(0, len(block)):
                     i += 1
-                    new.write(block[i] + "\n")
+                    new.write(block[j] + "\n")
             else:
                 new.write(line + "\n")
             i += 1
