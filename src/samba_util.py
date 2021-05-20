@@ -91,14 +91,13 @@ def add_user():
     passwd: str = str(input("Password: "))
     path: str = str(input("SAMBA share / user directory: "))
 
-    create_user(username=user)
-    add_passwd(passwd=passwd)
-    enable_user(user)
+    create_user(user)
+    add_passwd(passwd)
 
     if not os.path.isdir(path):
-        create_dir(path=path)
+        create_dir(path)
         change_ownership(user, path)
-        change_permissions(path=path)
+        change_permissions(path)
 
     main_menu("config")
 
@@ -376,6 +375,7 @@ def create_user(
         + username
         + " -s /usr/sbin/nologin -G "
         + groupname
+        + " "
         + username
     )
     try:
