@@ -96,6 +96,9 @@ def remove_reverse(alias: str, ip: str):
     index = get_line(alias, "/etc/named.conf")
     if index >= 0:
         remove_block(index, "/etc/named.conf", 5)
+    index = get_line(ip_spliter(ip), "/etc/named.conf")
+    if index >= 0:
+        remove_block(ip_spliter(ip), "/etc/named.conf", 5)
     file = "/var/named/reverse." + alias + ".hosts"
     if os.path.isfile(file):
         os.remove(file)
