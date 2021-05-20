@@ -91,8 +91,8 @@ def add_user():
     passwd: str = str(input("Password: "))
     path: str = str(input("SAMBA share / user directory: "))
 
-    create_user(user)
-    add_passwd(passwd)
+    create_user(user, path)
+    add_passwd(passwd, user)
 
     if not os.path.isdir(path):
         create_dir(path)
@@ -384,11 +384,9 @@ def create_user(
         print(e.output)
 
 
-def add_passwd(passwd: str, user: str = "sambaser"):
+def add_passwd(passwd: str, user: str = "sambauser"):
     try:
-        proc = subprocess.Popen(
-            ["smbpasswd", "-a", "-s", user], stdin=subprocess.PIPE
-        )
+        proc = subprocess.Popen(["smbpasswd", "-a", "-s", user], stdin=subprocess.PIPE)
         proc.communicate(input=(passwd + "\n" + passwd + "\n").encode("big5"))
         proc.communicate()
     except subprocess.CalledProcessError as e:
