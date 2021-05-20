@@ -387,9 +387,10 @@ def create_user(
 def add_passwd(passwd: str, user: str = "sambaser"):
     try:
         proc = subprocess.Popen(
-            ["sudo", "smbpasswd", "-a", "-s", user], stdin=subprocess.PIPE
+            ["smbpasswd", "-a", "-s", user], stdin=subprocess.PIPE
         )
         proc.communicate(input=passwd + "\n" + passwd + "\n")
+        proc.communicate()
     except subprocess.CalledProcessError as e:
         print(e.output)
         sys.exit()
