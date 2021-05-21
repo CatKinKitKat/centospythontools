@@ -5,7 +5,7 @@ import sys, os, shutil, subprocess
 
 def main(arguments: list):
     if len(arguments) != 1:
-        print("samba_enabler.py sysprep|config")
+        print("samba_util.py sysprep|config")
         sys.exit()
 
     main_menu(arguments[0])
@@ -17,7 +17,7 @@ def main_menu(arg: str):
     elif arg == "config":
         config()
     else:
-        print("samba_enabler.py sysprep|config")
+        print("samba_util.py sysprep|config")
 
     sys.exit()
 
