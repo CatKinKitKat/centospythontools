@@ -4,7 +4,7 @@ import sys, os, shutil, subprocess
 
 
 def main(arguments: list):
-    if len(arguments) >= 5:
+    if len(arguments) >= 3 and len(arguments) <= 5:
         if arguments[0] == "help":
             print(
                 "nfs_util.py add all alias.com ip.ad.dr.ess port\n"
