@@ -107,7 +107,7 @@ def remove_reverse(alias: str, ip: str):
 def ip_spliter(ip: str, option: bool = False):
     ip_blocks = ip.split(".")
     if option:
-        return str("." + ip_blocks[2] + "." + ip_blocks[1] + "." + ip_blocks[0])
+        return str(ip_blocks[2] + "." + ip_blocks[1] + "." + ip_blocks[0])
 
     return str(ip_blocks[3])
 
