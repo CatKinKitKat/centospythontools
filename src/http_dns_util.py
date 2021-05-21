@@ -168,7 +168,6 @@ def build_table_forward_block(alias: str, ip: str):
         str("@    IN MX 10 as-smtp." + alias),
         str("@    IN A     " + ip),
         str("www  IN A     " + ip),
-        str("mail IN A     " + ip),
     ]
     return block
 
