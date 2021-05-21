@@ -41,7 +41,7 @@ def main(arguments: list):
                 remove_reverse(arguments[2], arguments[3])
         else:
             print("The only accepted types are add|remove all|vhost|forward|reverse.")
-    
+
     sys.exit()
 
 
@@ -327,17 +327,6 @@ def add_block(index: int, file: str, block: list):
     os.remove(workingfile)
 
 
-def symlink_website(name: str):
-    config: str = "/etc/httpd/sites-available/" + name
-    link: str = "/etc/httpd/conf.d/" + name
-
-    try:
-        subprocess.run(["ln", "-s", config, link], check=True)
-    except subprocess.CalledProcessError as e:
-        print(e.output)
-        sys.exit()
-
-
 def create_vhost_directory(path: str):
     path = path + "/public_html"
     if not os.path.isdir(path):
@@ -353,12 +342,10 @@ def add_example_page(path: str):
     if not os.path.isdir(path):
         create_vhost_directory(path)
 
-    command: str = 'echo "<h1>Welcome!</h1>" >> ' + path + "/public_html/index.html"
-    try:
-        subprocess.run(command.split(), check=True)
-    except subprocess.CalledProcessError as e:
-        print(e.output)
-        sys.exit()
+    with open(str(path + "/public_html/index.html"), "a") as site:
+        site.write("<h1>Welcome!</h1>")
+        site.flush()
+        site.truncate()
 
 
 def sysctl():
