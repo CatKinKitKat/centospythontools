@@ -7,14 +7,14 @@ def main(arguments: list):
     if len(arguments) >= 3 and len(arguments) <= 5:
         if arguments[0] == "help":
             print(
-                "nfs_util.py add all alias.com ip.ad.dr.ess port\n"
-                "nfs_util.py add vhost alias.com ip.ad.dr.ess port\n"
-                "nfs_util.py add forward alias.com ip.ad.dr.ess\n"
-                "nfs_util.py add reverse alias.com ip.ad.dr.ess\n"
-                "nfs_util.py remove all alias.com ip.ad.dr.ess port\n"
-                "nfs_util.py remove vhost alias.com\n"
-                "nfs_util.py remove forward alias.com\n"
-                "nfs_util.py remove reverse alias.com ip.ad.dr.ess\n"
+                "http_dns_util.py add all alias.com ip.ad.dr.ess port\n"
+                "http_dns_util.py add vhost alias.com ip.ad.dr.ess port\n"
+                "http_dns_util.py add forward alias.com ip.ad.dr.ess\n"
+                "http_dns_util.py add reverse alias.com ip.ad.dr.ess\n"
+                "http_dns_util.py remove all alias.com ip.ad.dr.ess port\n"
+                "http_dns_util.py remove vhost alias.com\n"
+                "http_dns_util.py remove forward alias.com\n"
+                "http_dns_util.py remove reverse alias.com ip.ad.dr.ess\n"
             )
             sys.exit()
         elif arguments[0] == "add":
