@@ -146,7 +146,7 @@ def build_zone_forward_block(alias: str):
 
 def build_zone_reverse_block(alias: str, first: str):
     block: list = [
-        str('zone "' + first + '.in-addr-arpa" IN {'),
+        str('zone "' + first + '.in-addr.arpa" IN {'),
         "        type master;",
         str('        file "/var/named/reverse.' + alias + '.hosts";'),
         "};\n",
