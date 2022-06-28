@@ -1,0 +1,3 @@
+= centospythontools
+
+Development of scripts for automating System administration on CentOS (Linux) machines. It was a graded assignment for AS (Systems administration) course of my Computer Science degree.
